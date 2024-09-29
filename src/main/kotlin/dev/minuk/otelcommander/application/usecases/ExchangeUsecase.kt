@@ -26,8 +26,12 @@ data class AgentExchangeRequest(
     val customMessage: CustomMessage?,
 )
 
-data class Capabilities(val capabilities: Long) {
-    enum class Capability(val value: Long) {
+data class Capabilities(
+    val capabilities: Long,
+) {
+    enum class Capability(
+        val value: Long,
+    ) {
         Unspecified(0),
         ReportsStatus(1),
         AcceptsRemoteConfig(2),
@@ -45,13 +49,9 @@ data class Capabilities(val capabilities: Long) {
         ReportsHeartbeat(8192),
     }
 
-    fun hasCapability(capability: Capability): Boolean {
-        return capabilities and capability.value != 0L
-    }
+    fun hasCapability(capability: Capability): Boolean = capabilities and capability.value != 0L
 
-    fun toSet(): Set<Capability> {
-        return Capability.entries.filter { hasCapability(it) }.toSet()
-    }
+    fun toSet(): Set<Capability> = Capability.entries.filter { hasCapability(it) }.toSet()
 }
 
 interface DisconnectUsecase {

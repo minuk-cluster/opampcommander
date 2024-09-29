@@ -7,5 +7,5 @@ interface Command {
 }
 
 class ReportFullStateCommand(
-    override val targetInstanceUids: List<UUID>
-): Command
+    override val targetInstanceUids: List<UUID>,
+) : Command

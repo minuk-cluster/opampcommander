@@ -4,10 +4,9 @@ data class CommunicationStatus(
     val sequenceNum: Int,
 ) {
     companion object {
-        fun empty(): CommunicationStatus {
-            return CommunicationStatus(
+        fun empty(): CommunicationStatus =
+            CommunicationStatus(
                 sequenceNum = 0,
             )
-        }
     }
 }

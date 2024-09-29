@@ -12,20 +12,19 @@ data class AgentDescription(
         get() = nonIdentifyingAttributes.getHost()
 
     companion object {
-        fun empty(): AgentDescription {
-            return AgentDescription(
+        fun empty(): AgentDescription =
+            AgentDescription(
                 identifyingAttributes = emptyMap(),
                 nonIdentifyingAttributes = emptyMap(),
             )
-        }
     }
 }
 
 typealias IdentifyingAttributes = Map<String, String>
 
 fun IdentifyingAttributes.getService(): Service {
-    val serviceName:String? = this["service.name"]
-    val serviceNamespace:String? = this["service.namespace"]
+    val serviceName: String? = this["service.name"]
+    val serviceNamespace: String? = this["service.namespace"]
     val serviceVersion: String? = this["service.version"]
     val serviceInstanceId: String? = this["service.instance.id"]
     return Service(

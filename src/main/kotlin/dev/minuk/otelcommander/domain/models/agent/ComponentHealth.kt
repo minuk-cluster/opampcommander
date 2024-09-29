@@ -8,11 +8,11 @@ data class ComponentHealth(
     val lastError: String,
     val status: String,
     val statusObservedAt: Instant,
-    val componentHealthMap: Map<String, ComponentHealth>
+    val componentHealthMap: Map<String, ComponentHealth>,
 ) {
     companion object {
-        fun empty(): ComponentHealth {
-            return ComponentHealth(
+        fun empty(): ComponentHealth =
+            ComponentHealth(
                 healthy = false,
                 startedAt = Instant.now(),
                 lastError = "",
@@ -20,6 +20,5 @@ data class ComponentHealth(
                 statusObservedAt = Instant.now(),
                 componentHealthMap = mapOf(),
             )
-        }
     }
 }

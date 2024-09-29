@@ -1,7 +1,7 @@
-package dev.minuk.otelcommander.adapter.`in`.http.v1.opamp
+package dev.minuk.otelcommander.adapter.primary.http.v1.opamp
 
-import dev.minuk.otelcommander.adapter.`in`.http.v1.opamp.mapper.OpampMapper.toAgentDisconnectRequest
-import dev.minuk.otelcommander.adapter.`in`.http.v1.opamp.mapper.OpampMapper.toAgentExchangeRequest
+import dev.minuk.otelcommander.adapter.primary.http.v1.opamp.mapper.OpampMapper.toAgentDisconnectRequest
+import dev.minuk.otelcommander.adapter.primary.http.v1.opamp.mapper.OpampMapper.toAgentExchangeRequest
 import dev.minuk.otelcommander.application.usecases.DisconnectUsecase
 import dev.minuk.otelcommander.application.usecases.ExchangeUsecase
 import dev.minuk.otelcommander.util.Logger
@@ -25,9 +25,7 @@ class OpampController(
     }
 
     @RequestMapping("/test")
-    fun test(): Mono<ResponseEntity<String>> {
-        return Mono.just(ResponseEntity.ok("Hello, World!"))
-    }
+    fun test(): Mono<ResponseEntity<String>> = Mono.just(ResponseEntity.ok("Hello, World!"))
 
     /**
      * @param: [Opamp.AgentToServer]
@@ -60,16 +58,18 @@ class OpampController(
         consumes = [MediaType.APPLICATION_PROTOBUF_VALUE],
         produces = [MediaType.APPLICATION_PROTOBUF_VALUE],
     )
-    suspend fun exchange(@RequestBody agentToServer: Opamp.AgentToServer):ResponseEntity<Opamp.ServerToAgent> {
+    suspend fun exchange(
+        @RequestBody agentToServer: Opamp.AgentToServer,
+    ): ResponseEntity<Opamp.ServerToAgent> {
         try {
             log.info("$agentToServer")
             exchangeUsecase.exchange(
-                request = agentToServer.toAgentExchangeRequest()
+                request = agentToServer.toAgentExchangeRequest(),
             )
 
             if (agentToServer.hasAgentDisconnect()) {
                 disconnectUsecase.disconnect(
-                    request = agentToServer.toAgentDisconnectRequest()
+                    request = agentToServer.toAgentDisconnectRequest(),
                 )
             }
 
@@ -77,7 +77,8 @@ class OpampController(
                 log.warn("ConnectionSettingsRequest is in development. Not implemented yet in this project. It will be skipped.")
             }
 
-            return Opamp.ServerToAgent.newBuilder()
+            return Opamp.ServerToAgent
+                .newBuilder()
                 .setInstanceUid(agentToServer.instanceUid)
                 .build()
                 .let { ResponseEntity.ok(it) }
@@ -87,4 +88,3 @@ class OpampController(
         }
     }
 }
-
