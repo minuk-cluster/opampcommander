@@ -122,9 +122,9 @@ kotlinter {
 }
 
 tasks.withType<LintTask> {
-	source = source.minus(fileTree("src/generated")).asFileTree
+	source = source.minus(fileTree("build/generated")).asFileTree
 }
 
 tasks.withType<FormatTask> {
-	source = source.minus(fileTree("src/generated")).asFileTree
+	source = source.minus(fileTree("build/generated")).asFileTree
 }
