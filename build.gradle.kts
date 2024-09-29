@@ -1,6 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.google.protobuf.gradle.protoc
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
 	kotlin("jvm") version "1.9.25"
@@ -9,6 +11,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.6"
 
 	id("com.google.protobuf") version "0.8.17"
+	id("org.jmailen.kotlinter") version "4.4.1"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -110,4 +113,18 @@ tasks {
 			duplicatesStrategy = DuplicatesStrategy.INCLUDE
 		}
 	}
+}
+
+kotlinter {
+	failBuildWhenCannotAutoFormat = true
+	ignoreFailures = true
+	reporters = arrayOf("checkstyle", "plain")
+}
+
+tasks.withType<LintTask> {
+	source = source.minus(fileTree("build/generated")).asFileTree
+}
+
+tasks.withType<FormatTask> {
+	source = source.minus(fileTree("build/generated")).asFileTree
 }

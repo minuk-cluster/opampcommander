@@ -1,6 +1,6 @@
-package dev.minuk.otelcommander.adapter.`in`.http
+package dev.minuk.otelcommander.adapter.primary.http
 
-import dev.minuk.otelcommander.adapter.`in`.http.CompressionUtils.isGzipRequest
+import dev.minuk.otelcommander.adapter.primary.http.CompressionUtils.isGzipRequest
 import org.apache.commons.io.IOUtils
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
@@ -22,11 +22,13 @@ import java.lang.RuntimeException
 import java.util.zip.GZIPInputStream
 import kotlin.text.Charsets.UTF_8
 
-
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class GzipDecompressionFilter : WebFilter {
-    override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
+    override fun filter(
+        exchange: ServerWebExchange,
+        chain: WebFilterChain,
+    ): Mono<Void> {
         if (!exchange.request.isGzipRequest()) {
             return chain.filter(exchange)
         }
@@ -48,25 +50,26 @@ class GzipDecompressionFilter : WebFilter {
     }
 
     class GzipServerHttpRequest(
-        private val serverHttpRequest: ServerHttpRequest
-    ): ServerHttpRequest by serverHttpRequest {
-        override fun getBody(): Flux<DataBuffer> {
-            return serverHttpRequest.body
-                .map {it.asInputStream() }
-                .reduce { acc, elem -> SequenceInputStream(acc, elem)}
+        private val serverHttpRequest: ServerHttpRequest,
+    ) : ServerHttpRequest by serverHttpRequest {
+        override fun getBody(): Flux<DataBuffer> =
+            serverHttpRequest.body
+                .map { it.asInputStream() }
+                .reduce { acc, elem -> SequenceInputStream(acc, elem) }
                 .flux()
                 .flatMap {
                     DataBufferUtils.readInputStream(
                         { GZIPInputStream(it) },
                         DefaultDataBufferFactory(),
-                        it.available()
+                        it.available(),
                     )
                 }
-        }
     }
 }
 
-class IllegalGzipRequestException(message: String): RuntimeException(message)
+class IllegalGzipRequestException(
+    message: String,
+) : RuntimeException(message)
 
 object CompressionUtils {
     const val GZIP: String = "gzip"
@@ -77,15 +80,14 @@ object CompressionUtils {
         return string.toByteArray()
     }
 
-    fun ServerHttpRequest.isGzipRequest(): Boolean {
-        return containsGzip(this, CONTENT_ENCODING)
-    }
+    fun ServerHttpRequest.isGzipRequest(): Boolean = containsGzip(this, CONTENT_ENCODING)
 
-    fun isGzipResponseRequired(serverHttpRequest: ServerHttpRequest): Boolean {
-        return containsGzip(serverHttpRequest, ACCEPT_ENCODING)
-    }
+    fun isGzipResponseRequired(serverHttpRequest: ServerHttpRequest): Boolean = containsGzip(serverHttpRequest, ACCEPT_ENCODING)
 
-    private fun containsGzip(serverHttpRequest: ServerHttpRequest, headerName: String): Boolean {
+    private fun containsGzip(
+        serverHttpRequest: ServerHttpRequest,
+        headerName: String,
+    ): Boolean {
         if (!serverHttpRequest.headers.isEmpty()) {
             return serverHttpRequest.headers[headerName]?.contains(GZIP) ?: false
         }

@@ -1,4 +1,4 @@
-package dev.minuk.otelcommander.domain.port.`in`.agent
+package dev.minuk.otelcommander.domain.port.primary.agent
 
 import dev.minuk.otelcommander.domain.models.agent.Agent
 

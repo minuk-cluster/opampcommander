@@ -20,13 +20,14 @@ class OtelCollectorOPAMPIntegrationTest {
     @Test
     @Disabled
     fun `otel-collector-contrib initialization with opamp extension`() {
-        val otelConfigYaml = """
+        val otelConfigYaml =
+            """
             extensions:
               health_check:
               opamp:
                 server:
                   http:
-                    endpoint: "http://host.docker.internal:${localPort}/api/v1/opamp"
+                    endpoint: "http://host.docker.internal:$localPort/api/v1/opamp"
             receivers:
               nop:
             processors:
@@ -46,13 +47,14 @@ class OtelCollectorOPAMPIntegrationTest {
                   processors: [batch]
                   exporters: [nop]
                 
-        """.trimIndent()
+            """.trimIndent()
 
-        val otelCollectorContainer = GenericContainer(otelCollectorContainerImage)
-            .withCopyToContainer(
-                Transferable.of(otelConfigYaml), "/etc/otelcol-contrib/config.yaml"
-            )
-            .withStartupTimeout(Duration.ofSeconds(30))
+        val otelCollectorContainer =
+            GenericContainer(otelCollectorContainerImage)
+                .withCopyToContainer(
+                    Transferable.of(otelConfigYaml),
+                    "/etc/otelcol-contrib/config.yaml",
+                ).withStartupTimeout(Duration.ofSeconds(30))
         otelCollectorContainer.start()
         Thread.sleep(1000 * 60 * 60)
         otelCollectorContainer.stop()

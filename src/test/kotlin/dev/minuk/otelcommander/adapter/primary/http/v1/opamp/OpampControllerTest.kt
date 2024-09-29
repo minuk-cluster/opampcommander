@@ -1,13 +1,11 @@
-package dev.minuk.otelcommander.adapter.`in`.http.v1.opamp
+package dev.minuk.otelcommander.adapter.primary.http.v1.opamp
 
 import com.github.f4b6a3.ulid.Ulid
 import com.google.protobuf.ByteString
 import com.ninjasquad.springmockk.MockkBean
-import dev.minuk.otelcommander.application.usecases.AgentExchangeRequest
 import dev.minuk.otelcommander.application.usecases.DisconnectUsecase
 import dev.minuk.otelcommander.application.usecases.ExchangeUsecase
 import io.mockk.coEvery
-import io.mockk.every
 import opamp.proto.Opamp.AgentToServer
 import opamp.proto.Opamp.ServerToAgent
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -34,7 +32,6 @@ class OpampControllerTest {
     @MockkBean
     lateinit var disconnectUsecase: DisconnectUsecase
 
-
     @Autowired
     lateinit var webClient: WebTestClient
 
@@ -47,20 +44,26 @@ class OpampControllerTest {
         coEvery { exchangeUsecase.exchange(any()) } returns Unit
         coEvery { disconnectUsecase.disconnect(any()) } returns Unit
 
-        val request = AgentToServer.newBuilder()
+        val request =
+            AgentToServer
+                .newBuilder()
                 .setInstanceUid(ByteString.copyFrom(instanceUid.toBytes()))
                 .build()
 
         // when
-        webClient.post()
+        webClient
+            .post()
             .uri("/api/v1/opamp")
             .contentType(MediaType.APPLICATION_PROTOBUF)
             .header("accept-encoding", "gzip")
             .body(BodyInserters.fromValue(request.toByteArray().compressGzip()))
             .exchange()
-            .expectStatus().isOk // then
+            .expectStatus()
+            .isOk // then
             .expectBody()
-            .returnResult().responseBody.let {
+            .returnResult()
+            .responseBody
+            .let {
                 val serverToAgent = ServerToAgent.parseFrom(it)
                 val actualInstanceUid = Ulid.from(serverToAgent.instanceUid.toByteArray())
                 assertEquals(instanceUid, actualInstanceUid)

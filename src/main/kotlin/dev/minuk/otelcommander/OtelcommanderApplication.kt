@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class OtelcommanderApplication
 
 fun main(args: Array<String>) {
-	runApplication<OtelcommanderApplication>(*args)
+    runApplication<OtelcommanderApplication>(*args)
 }

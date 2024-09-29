@@ -6,12 +6,11 @@ data class PackageStatuses(
     val errorMessage: String,
 ) {
     companion object {
-        fun empty(): PackageStatuses {
-            return PackageStatuses(
+        fun empty(): PackageStatuses =
+            PackageStatuses(
                 packages = mapOf(),
                 serverProvidedAllPackagesHash = "",
                 errorMessage = "",
             )
-        }
     }
 }

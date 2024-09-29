@@ -4,8 +4,6 @@ data class EffectiveConfig(
     val configMap: Map<String, AgentConfigMap>,
 ) {
     companion object {
-        fun empty(): EffectiveConfig {
-            return EffectiveConfig(mapOf())
-        }
+        fun empty(): EffectiveConfig = EffectiveConfig(mapOf())
     }
 }

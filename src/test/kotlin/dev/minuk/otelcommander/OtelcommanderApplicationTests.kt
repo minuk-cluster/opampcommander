@@ -7,9 +7,7 @@ import org.springframework.context.annotation.Import
 @Import(TestcontainersConfiguration::class)
 @SpringBootTest
 class OtelcommanderApplicationTests {
-
-	@Test
-	fun contextLoads() {
-	}
-
+    @Test
+    fun contextLoads() {
+    }
 }

@@ -6,9 +6,6 @@ import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter
 
 @Configuration
 class ProtobufConfiguration {
-
     @Bean
-    fun protobufHttpMessageConverter(): ProtobufHttpMessageConverter {
-        return ProtobufHttpMessageConverter()
-    }
+    fun protobufHttpMessageConverter(): ProtobufHttpMessageConverter = ProtobufHttpMessageConverter()
 }
