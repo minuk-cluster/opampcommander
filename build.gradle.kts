@@ -95,6 +95,7 @@ kotlin {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	jvmArgs("-Xshare:off")
 }
 
 tasks.withType<KotlinCompile>().all {
