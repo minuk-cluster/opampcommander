@@ -36,7 +36,6 @@ class OpampControllerTest {
     lateinit var webClient: WebTestClient
 
     @Test
-    @Disabled
     fun `exchange When OpampAgentToServer_Requested Then Response_OpampServerToAgent_With_InstanceUid`() {
         val instanceUid = Ulid.fast()
 
@@ -55,7 +54,7 @@ class OpampControllerTest {
             .post()
             .uri("/api/v1/opamp")
             .contentType(MediaType.APPLICATION_PROTOBUF)
-            .header("accept-encoding", "gzip")
+            .header("content-encoding", "gzip")
             .body(BodyInserters.fromValue(request.toByteArray().compressGzip()))
             .exchange()
             .expectStatus()
