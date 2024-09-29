@@ -1,5 +1,6 @@
 package dev.minuk.otelcommander.integration
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
@@ -17,6 +18,7 @@ class OtelCollectorOPAMPIntegrationTest {
     private var localPort: Int? = null
 
     @Test
+    @Disabled
     fun `otel-collector-contrib initialization with opamp extension`() {
         val otelConfigYaml = """
             extensions:

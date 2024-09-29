@@ -61,24 +61,30 @@ class OpampController(
         produces = [MediaType.APPLICATION_PROTOBUF_VALUE],
     )
     suspend fun exchange(@RequestBody agentToServer: Opamp.AgentToServer):ResponseEntity<Opamp.ServerToAgent> {
-        exchangeUsecase.exchange(
-            request = agentToServer.toAgentExchangeRequest()
-        )
-
-        if (agentToServer.hasAgentDisconnect()) {
-            disconnectUsecase.disconnect(
-                request = agentToServer.toAgentDisconnectRequest()
+        try {
+            log.info("$agentToServer")
+            exchangeUsecase.exchange(
+                request = agentToServer.toAgentExchangeRequest()
             )
-        }
 
-        if (agentToServer.hasConnectionSettingsRequest()) {
-            log.warn("ConnectionSettingsRequest is in development. Not implemented yet in this project. It will be skipped.")
-        }
+            if (agentToServer.hasAgentDisconnect()) {
+                disconnectUsecase.disconnect(
+                    request = agentToServer.toAgentDisconnectRequest()
+                )
+            }
 
-        return Opamp.ServerToAgent.newBuilder()
-            .setInstanceUid(agentToServer.instanceUid)
-            .build()
-            .let { ResponseEntity.ok(it) }
+            if (agentToServer.hasConnectionSettingsRequest()) {
+                log.warn("ConnectionSettingsRequest is in development. Not implemented yet in this project. It will be skipped.")
+            }
+
+            return Opamp.ServerToAgent.newBuilder()
+                .setInstanceUid(agentToServer.instanceUid)
+                .build()
+                .let { ResponseEntity.ok(it) }
+        } catch (e: Exception) {
+            log.error("Error occurred while processing the request: $agentToServer", e)
+            return ResponseEntity.badRequest().build()
+        }
     }
 }
 

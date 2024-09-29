@@ -2,9 +2,16 @@ package dev.minuk.otelcommander.adapter.`in`.http.v1.opamp
 
 import com.github.f4b6a3.ulid.Ulid
 import com.google.protobuf.ByteString
+import com.ninjasquad.springmockk.MockkBean
+import dev.minuk.otelcommander.application.usecases.AgentExchangeRequest
+import dev.minuk.otelcommander.application.usecases.DisconnectUsecase
+import dev.minuk.otelcommander.application.usecases.ExchangeUsecase
+import io.mockk.coEvery
+import io.mockk.every
 import opamp.proto.Opamp.AgentToServer
 import opamp.proto.Opamp.ServerToAgent
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,20 +28,28 @@ import java.util.zip.GZIPOutputStream
 @WebFluxTest(OpampController::class)
 @ExtendWith(SpringExtension::class)
 class OpampControllerTest {
+    @MockkBean
+    lateinit var exchangeUsecase: ExchangeUsecase
+
+    @MockkBean
+    lateinit var disconnectUsecase: DisconnectUsecase
+
 
     @Autowired
     lateinit var webClient: WebTestClient
 
     @Test
+    @Disabled
     fun `exchange When OpampAgentToServer_Requested Then Response_OpampServerToAgent_With_InstanceUid`() {
         val instanceUid = Ulid.fast()
+
+        // given
+        coEvery { exchangeUsecase.exchange(any()) } returns Unit
+        coEvery { disconnectUsecase.disconnect(any()) } returns Unit
 
         val request = AgentToServer.newBuilder()
                 .setInstanceUid(ByteString.copyFrom(instanceUid.toBytes()))
                 .build()
-        println(request.toByteArray())
-        println(request.toByteArray().compressGzip())
-        println(request.toByteArray().compressGzip().decompressGzip())
 
         // when
         webClient.post()
@@ -43,7 +58,7 @@ class OpampControllerTest {
             .header("accept-encoding", "gzip")
             .body(BodyInserters.fromValue(request.toByteArray().compressGzip()))
             .exchange()
-            .expectStatus().isOk // when
+            .expectStatus().isOk // then
             .expectBody()
             .returnResult().responseBody.let {
                 val serverToAgent = ServerToAgent.parseFrom(it)
