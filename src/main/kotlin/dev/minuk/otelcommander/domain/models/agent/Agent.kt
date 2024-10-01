@@ -6,10 +6,10 @@ data class Agent(
     val instanceUid: UUID,
     val agentDescription: AgentDescription,
     val effectiveConfig: EffectiveConfig,
-    val communicationStatus: CommunicationStatus,
     val packageStatuses: PackageStatuses,
     val componentHealth: ComponentHealth,
     val customCapabilities: CustomCapabilities,
+    val communicationStatus: CommunicationStatus,
 ) {
     constructor(instanceUid: UUID) : this(
         instanceUid = instanceUid,

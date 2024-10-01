@@ -5,7 +5,6 @@ import dev.minuk.otelcommander.application.usecases.AgentDisconnectRequest
 import dev.minuk.otelcommander.application.usecases.AgentExchangeRequest
 import dev.minuk.otelcommander.application.usecases.Capabilities
 import dev.minuk.otelcommander.application.usecases.CustomMessage
-import dev.minuk.otelcommander.domain.models.agent.AgentConfigMap
 import dev.minuk.otelcommander.domain.models.agent.AgentDescription
 import dev.minuk.otelcommander.domain.models.agent.ComponentHealth
 import dev.minuk.otelcommander.domain.models.agent.CustomCapabilities
@@ -122,7 +121,7 @@ object OpampMapper {
         EffectiveConfig(
             configMap =
                 configMap.configMapMap.mapValues {
-                    AgentConfigMap(
+                    EffectiveConfig.AgentConfigMap(
                         body = it.value.body.toString(),
                         contentType = it.value.contentType,
                     )

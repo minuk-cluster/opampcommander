@@ -6,4 +6,9 @@ data class EffectiveConfig(
     companion object {
         fun empty(): EffectiveConfig = EffectiveConfig(mapOf())
     }
+
+    data class AgentConfigMap(
+        val body: String,
+        val contentType: String,
+    )
 }
