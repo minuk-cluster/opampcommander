@@ -9,7 +9,6 @@ import io.mockk.coEvery
 import opamp.proto.Opamp.AgentToServer
 import opamp.proto.Opamp.ServerToAgent
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
