@@ -1,4 +1,4 @@
-package dev.minuk.otelcommander.config
+package dev.minuk.otelcommander.adapter.primary.http.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
