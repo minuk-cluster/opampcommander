@@ -22,9 +22,7 @@ class AgentAdminService(
         return agent
     }
 
-    override suspend fun getAgents(request: GetAgentsRequest): Flow<Agent> {
-        return getAgentsInternalUsecase.getAgents(request = request)
-    }
+    override suspend fun getAgents(request: GetAgentsRequest): Flow<Agent> = getAgentsInternalUsecase.getAgents(request = request)
 
     private fun String.toUUID(): UUID = UUID.fromString(this)
 }

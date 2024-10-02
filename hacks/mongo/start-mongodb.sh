@@ -17,9 +17,6 @@ cd hacks/mongo
 # Run MongoDB in a Docker container
 docker compose up -d
 
-# Run the MongoDB replica set initialization script
-docker compose exec mongo1 mongosh -u root -p example --eval 'rs.initiate({ _id: "rs0", version: 1, members: [ { _id: 0, host: "mongo1:27017" }, { _id: 1, host: "mongo2:27018" }, { _id: 2, host: "mongo3:27019" } ] })'
-
 # Print the uri for the MongoDB instance
 echo "The MongoDB instances are running at the following URIs:"
-echo "  mongodb://root:example@localhost:27017,localhost:27018,localhost:27019/commander?replicaSet=rs0&authSource=admin"
+echo "  mongodb://root:example@localhost:27017/commander?authSource=admin"

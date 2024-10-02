@@ -20,7 +20,7 @@ class OpampService(
         val log by Logger()
     }
 
-    override suspend fun exchange(request: AgentExchangeRequest) {
+    override suspend fun exchange(request: AgentExchangeRequest): Agent {
         log.info("Received agent exchange request for instanceUid: ${request.instanceUid}")
         log.info("request: $request")
         val agent = getAgentInternalUsecase.getAgent(instanceUid = request.instanceUid) ?: Agent(instanceUid = request.instanceUid)
@@ -32,7 +32,7 @@ class OpampService(
                 newPackageStatuses = request.packageStatuses,
                 newCustomCapabilities = request.customCapabilities,
             )
-        upsertAgentInternalUsecase.upsertAgent(updatedAgent)
+        return upsertAgentInternalUsecase.upsertAgent(updatedAgent)
     }
 
     override suspend fun disconnect(request: AgentDisconnectRequest) {

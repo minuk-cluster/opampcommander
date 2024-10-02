@@ -32,16 +32,20 @@ class AgentController(
         val basis = sort.split(":")[0]
         val direction = sort.split(":")[1]
 
-        val agents = agentUsecase.getAgents(
-            request = GetAgentsRequest(
-                pivot = pivot,
-                limit = limit,
-                sort = Sort(
-                    basis = basis,
-                    direction = Sort.Direction.of(direction)
-                ),
-            )
-        ).toList()
+        val agents =
+            agentUsecase
+                .getAgents(
+                    request =
+                        GetAgentsRequest(
+                            pivot = pivot,
+                            limit = limit,
+                            sort =
+                                Sort(
+                                    basis = basis,
+                                    direction = Sort.Direction.of(direction),
+                                ),
+                        ),
+                ).toList()
 
         return MultipleAgentResponse(
             agents = agents, // TODO: Change to AgentResponse

@@ -7,14 +7,16 @@ data class Sort(
 ) {
     enum class Direction {
         ASC,
-        DESC;
+        DESC,
+        ;
 
         companion object {
-            fun of(value: String): Direction = when (value.lowercase()) {
-                "asc" -> ASC
-                "desc" -> DESC
-                else -> throw IllegalArgumentException("Invalid direction: $value")
-            }
+            fun of(value: String): Direction =
+                when (value.lowercase()) {
+                    "asc" -> ASC
+                    "desc" -> DESC
+                    else -> throw IllegalArgumentException("Invalid direction: $value")
+                }
         }
     }
 }

@@ -58,6 +58,18 @@ class AgentMongoAdapter(
                 componentHealth = agent.componentHealth,
                 customCapabilities = agent.customCapabilities,
             )
-        return reactiveMongoTemplate.save(agent).awaitSingle()
+        return reactiveMongoTemplate
+            .save(agentDocument)
+            .map {
+                Agent(
+                    instanceUid = it.instanceUid,
+                    agentDescription = it.agentDescription,
+                    effectiveConfig = it.effectiveConfig,
+                    communicationStatus = it.communicationStatus,
+                    packageStatuses = it.packageStatuses,
+                    componentHealth = it.componentHealth,
+                    customCapabilities = it.customCapabilities,
+                )
+            }.awaitSingle()
     }
 }

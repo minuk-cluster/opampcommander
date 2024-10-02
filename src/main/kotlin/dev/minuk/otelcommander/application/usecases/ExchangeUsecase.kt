@@ -1,5 +1,6 @@
 package dev.minuk.otelcommander.application.usecases
 
+import dev.minuk.otelcommander.domain.models.agent.Agent
 import dev.minuk.otelcommander.domain.models.agent.AgentDescription
 import dev.minuk.otelcommander.domain.models.agent.ComponentHealth
 import dev.minuk.otelcommander.domain.models.agent.CustomCapabilities
@@ -10,7 +11,7 @@ import java.util.UUID
 
 interface ExchangeUsecase {
     // TOOD: make agentToServer as standalone class without protobuf dependency.
-    suspend fun exchange(request: AgentExchangeRequest)
+    suspend fun exchange(request: AgentExchangeRequest): Agent
 }
 
 data class AgentExchangeRequest(

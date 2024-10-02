@@ -23,10 +23,7 @@ class AgentService(
 
     override suspend fun getAgent(instanceUid: UUID): Agent? = null
 
-    override suspend fun upsertAgent(agent: Agent): Boolean {
-        // TODO: Implement
-        return true
-    }
+    override suspend fun upsertAgent(agent: Agent): Agent = agentOperationsPort.saveAgent(agent)
 
     override suspend fun getAgents(request: GetAgentsRequest): Flow<Agent> {
         // TODO: Implement request by sort.
