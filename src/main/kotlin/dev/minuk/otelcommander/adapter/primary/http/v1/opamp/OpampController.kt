@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
-import java.util.UUID
 
 @RestController
 @RequestMapping("/api/v1/opamp")
@@ -82,7 +81,7 @@ class OpampController(
 
             return Opamp.ServerToAgent
                 .newBuilder()
-                .setInstanceUid(agent.instanceUid.toByteString())
+                .setInstanceUid(ByteString.copyFrom(agent.instanceUid.toBytes()))
                 .build()
                 .let { ResponseEntity.ok(it) }
         } catch (e: Exception) {
@@ -90,6 +89,4 @@ class OpampController(
             return ResponseEntity.badRequest().build()
         }
     }
-
-    private fun UUID.toByteString(): ByteString = ByteString.copyFrom(this.toString().toByteArray())
 }

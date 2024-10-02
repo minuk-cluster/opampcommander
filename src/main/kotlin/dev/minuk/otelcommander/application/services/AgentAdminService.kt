@@ -1,5 +1,6 @@
 package dev.minuk.otelcommander.application.services
 
+import com.github.f4b6a3.ulid.Ulid
 import dev.minuk.otelcommander.application.usecases.AgentAdminUsecase
 import dev.minuk.otelcommander.domain.models.agent.Agent
 import dev.minuk.otelcommander.domain.port.primary.agent.GetAgentInternalUsecase
@@ -17,7 +18,7 @@ class AgentAdminService(
     override suspend fun getAgentByInstanceUid(instanceUid: String): Agent {
         // TODO: Make another exception to handle detailed error message
         @Suppress("NAME_SHADOWING")
-        val instanceUid = instanceUid.toUUID()
+        val instanceUid = Ulid.from(instanceUid)
         val agent = getAgentInternalUsecase.getAgent(instanceUid) ?: throw IllegalArgumentException("Agent not found")
         return agent
     }

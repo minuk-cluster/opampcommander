@@ -1,5 +1,6 @@
 package dev.minuk.otelcommander.adapter.primary.http.v1.opamp.mapper
 
+import com.github.f4b6a3.ulid.Ulid
 import com.google.protobuf.ByteString
 import dev.minuk.otelcommander.application.usecases.AgentDisconnectRequest
 import dev.minuk.otelcommander.application.usecases.AgentExchangeRequest
@@ -77,7 +78,7 @@ object OpampMapper {
             }
 
         return AgentExchangeRequest(
-            instanceUid = instanceUid.toUUID(),
+            instanceUid = Ulid.from(instanceUid.toByteArray()),
             sequenceNum = sequenceNum,
             capabilities = Capabilities(capabilities),
             agentDescription = agentDescription,

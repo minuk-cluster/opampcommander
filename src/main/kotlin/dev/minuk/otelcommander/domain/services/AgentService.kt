@@ -1,5 +1,6 @@
 package dev.minuk.otelcommander.domain.services
 
+import com.github.f4b6a3.ulid.Ulid
 import dev.minuk.otelcommander.domain.models.agent.Agent
 import dev.minuk.otelcommander.domain.port.primary.agent.GetAgentInternalUsecase
 import dev.minuk.otelcommander.domain.port.primary.agent.GetAgentsInternalUsecase
@@ -9,7 +10,6 @@ import dev.minuk.otelcommander.domain.port.secondary.agent.AgentOperationsPort
 import dev.minuk.otelcommander.util.Logger
 import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 @Service
 class AgentService(
@@ -21,7 +21,7 @@ class AgentService(
         val log by Logger()
     }
 
-    override suspend fun getAgent(instanceUid: UUID): Agent? = null
+    override suspend fun getAgent(instanceUid: Ulid): Agent? = null
 
     override suspend fun upsertAgent(agent: Agent): Agent = agentOperationsPort.saveAgent(agent)
 
