@@ -3,8 +3,10 @@ spring:
     name: otelcommander
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://root:example@localhost:27017,localhost:27018,localhost:27019/commander?replicaSet=rs0&authSource=admin}
+      uri: ${MONGODB_URI:mongodb://root:example@localhost:27017/commander?authSource=admin}
+      database: commander
 server:
+  port: 8080
   compression:
     enabled: true
     mime-types: application/x-protobuf

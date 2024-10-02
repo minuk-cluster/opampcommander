@@ -14,6 +14,7 @@ class OtelcommanderApplicationArchTests {
                 .domainServices(
                     "dev.minuk.otelcommander.domain.services..", // implementations
                     "dev.minuk.otelcommander.domain.port.primary..", // interfaces
+                    "dev.minuk.otelcommander.domain.port.secondary..", // interfaces
                 ).applicationServices(
                     "dev.minuk.otelcommander.application.services..",
                     "dev.minuk.otelcommander.application.usecases..",

@@ -13,9 +13,5 @@ fi
 ## Stop MongoDB
 ./hacks/mongo/stop-mongodb.sh
 
-# Reset MongoDB
-## Delete mongodb data
-rm -rf hacks/mongo/data
-
 ## Delete the docker container
 docker compose rm -f -v

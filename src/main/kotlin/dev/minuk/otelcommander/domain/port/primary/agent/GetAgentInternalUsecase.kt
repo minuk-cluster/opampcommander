@@ -1,8 +1,8 @@
 package dev.minuk.otelcommander.domain.port.primary.agent
 
+import com.github.f4b6a3.ulid.Ulid
 import dev.minuk.otelcommander.domain.models.agent.Agent
-import java.util.UUID
 
 interface GetAgentInternalUsecase {
-    suspend fun getAgent(instanceUid: UUID): Agent?
+    suspend fun getAgent(instanceUid: Ulid): Agent?
 }

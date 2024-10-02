@@ -1,5 +1,6 @@
 package dev.minuk.otelcommander.adapter.primary.http.v1.opamp
 
+import com.google.protobuf.ByteString
 import dev.minuk.otelcommander.adapter.primary.http.v1.opamp.mapper.OpampMapper.toAgentDisconnectRequest
 import dev.minuk.otelcommander.adapter.primary.http.v1.opamp.mapper.OpampMapper.toAgentExchangeRequest
 import dev.minuk.otelcommander.application.usecases.DisconnectUsecase
@@ -63,9 +64,10 @@ class OpampController(
     ): ResponseEntity<Opamp.ServerToAgent> {
         try {
             log.info("$agentToServer")
-            exchangeUsecase.exchange(
-                request = agentToServer.toAgentExchangeRequest(),
-            )
+            val agent =
+                exchangeUsecase.exchange(
+                    request = agentToServer.toAgentExchangeRequest(),
+                )
 
             if (agentToServer.hasAgentDisconnect()) {
                 disconnectUsecase.disconnect(
@@ -79,7 +81,7 @@ class OpampController(
 
             return Opamp.ServerToAgent
                 .newBuilder()
-                .setInstanceUid(agentToServer.instanceUid)
+                .setInstanceUid(ByteString.copyFrom(agent.instanceUid.toBytes()))
                 .build()
                 .let { ResponseEntity.ok(it) }
         } catch (e: Exception) {

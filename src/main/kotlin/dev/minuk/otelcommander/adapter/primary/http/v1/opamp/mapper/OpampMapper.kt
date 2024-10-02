@@ -1,11 +1,11 @@
 package dev.minuk.otelcommander.adapter.primary.http.v1.opamp.mapper
 
+import com.github.f4b6a3.ulid.Ulid
 import com.google.protobuf.ByteString
 import dev.minuk.otelcommander.application.usecases.AgentDisconnectRequest
 import dev.minuk.otelcommander.application.usecases.AgentExchangeRequest
 import dev.minuk.otelcommander.application.usecases.Capabilities
 import dev.minuk.otelcommander.application.usecases.CustomMessage
-import dev.minuk.otelcommander.domain.models.agent.AgentConfigMap
 import dev.minuk.otelcommander.domain.models.agent.AgentDescription
 import dev.minuk.otelcommander.domain.models.agent.ComponentHealth
 import dev.minuk.otelcommander.domain.models.agent.CustomCapabilities
@@ -78,7 +78,7 @@ object OpampMapper {
             }
 
         return AgentExchangeRequest(
-            instanceUid = instanceUid.toUUID(),
+            instanceUid = Ulid.from(instanceUid.toByteArray()),
             sequenceNum = sequenceNum,
             capabilities = Capabilities(capabilities),
             agentDescription = agentDescription,
@@ -122,7 +122,7 @@ object OpampMapper {
         EffectiveConfig(
             configMap =
                 configMap.configMapMap.mapValues {
-                    AgentConfigMap(
+                    EffectiveConfig.AgentConfigMap(
                         body = it.value.body.toString(),
                         contentType = it.value.contentType,
                     )

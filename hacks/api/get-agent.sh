@@ -10,11 +10,7 @@ elif [[ $DIR == *"/mongo" ]]; then
   cd ../../
 fi
 
-## set the path for mongodb data
-MONGODB_DATA_PATH=$PWD/hacks/mongo/data
-MONGODB_PKI_PATH=$MONGODB_DATA_PATH/pki
-## create the directory if it does not exist
-mkdir -p $MONGODB_PKI_PATH
+cd hacks/api
 
-openssl rand -base64 741 > $MONGODB_PKI_PATH/keyfile
-chmod 0400 $MONGODB_PKI_PATH/keyfile
+API_SERVER="http://localhost:8080"
+curl "$API_SERVER/api/v1/agent"

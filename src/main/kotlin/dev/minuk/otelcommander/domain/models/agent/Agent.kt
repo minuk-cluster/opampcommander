@@ -1,17 +1,17 @@
 package dev.minuk.otelcommander.domain.models.agent
 
-import java.util.UUID
+import com.github.f4b6a3.ulid.Ulid
 
 data class Agent(
-    val instanceUid: UUID,
+    val instanceUid: Ulid,
     val agentDescription: AgentDescription,
     val effectiveConfig: EffectiveConfig,
-    val communicationStatus: CommunicationStatus,
     val packageStatuses: PackageStatuses,
     val componentHealth: ComponentHealth,
     val customCapabilities: CustomCapabilities,
+    val communicationStatus: CommunicationStatus,
 ) {
-    constructor(instanceUid: UUID) : this(
+    constructor(instanceUid: Ulid) : this(
         instanceUid = instanceUid,
         agentDescription = AgentDescription.empty(),
         effectiveConfig = EffectiveConfig.empty(),
