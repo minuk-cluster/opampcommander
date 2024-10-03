@@ -18,7 +18,6 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.io.InputStream
 import java.io.SequenceInputStream
-import java.lang.RuntimeException
 import java.util.zip.GZIPInputStream
 import kotlin.text.Charsets.UTF_8
 
@@ -66,10 +65,6 @@ class GzipDecompressionFilter : WebFilter {
                 }
     }
 }
-
-class IllegalGzipRequestException(
-    message: String,
-) : RuntimeException(message)
 
 object CompressionUtils {
     const val GZIP: String = "gzip"

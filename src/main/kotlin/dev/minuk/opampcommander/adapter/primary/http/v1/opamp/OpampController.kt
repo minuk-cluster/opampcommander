@@ -1,10 +1,7 @@
-package dev.minuk.opampcommander.adapter.primary.http.api.v1.opamp
+package dev.minuk.opampcommander.adapter.primary.http.v1.opamp
 
-import com.google.protobuf.ByteString
-import dev.minuk.opampcommander.adapter.primary.http.api.v1.opamp.mapper.OpampMapper.toAgentDisconnectRequest
-import dev.minuk.opampcommander.adapter.primary.http.api.v1.opamp.mapper.OpampMapper.toAgentExchangeRequest
-import dev.minuk.opampcommander.application.usecases.DisconnectUsecase
-import dev.minuk.opampcommander.application.usecases.ExchangeUsecase
+import dev.minuk.opampcommander.application.usecases.FetchServerToAgentUsecase
+import dev.minuk.opampcommander.application.usecases.HandleAgentToServerUsecase
 import dev.minuk.opampcommander.util.Logger
 import opamp.proto.Opamp
 import org.springframework.http.MediaType
@@ -16,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/api/v1/opamp")
+@RequestMapping("/v1/opamp")
 class OpampController(
-    val exchangeUsecase: ExchangeUsecase,
-    val disconnectUsecase: DisconnectUsecase,
+    val handleAgentToServerUsecase: HandleAgentToServerUsecase,
+    val fetchServerToAgentUsecase: FetchServerToAgentUsecase,
 ) {
     companion object {
         private val log by Logger()
@@ -63,27 +60,9 @@ class OpampController(
         @RequestBody agentToServer: Opamp.AgentToServer,
     ): ResponseEntity<Opamp.ServerToAgent> {
         try {
-            log.info("$agentToServer")
-            val agent =
-                exchangeUsecase.exchange(
-                    request = agentToServer.toAgentExchangeRequest(),
-                )
-
-            if (agentToServer.hasAgentDisconnect()) {
-                disconnectUsecase.disconnect(
-                    request = agentToServer.toAgentDisconnectRequest(),
-                )
-            }
-
-            if (agentToServer.hasConnectionSettingsRequest()) {
-                log.warn("ConnectionSettingsRequest is in development. Not implemented yet in this project. It will be skipped.")
-            }
-
-            return Opamp.ServerToAgent
-                .newBuilder()
-                .setInstanceUid(ByteString.copyFrom(agent.instanceUid.toBytes()))
-                .build()
-                .let { ResponseEntity.ok(it) }
+            handleAgentToServerUsecase.handleAgentToServer(agentToServer)
+            val agent = fetchServerToAgentUsecase.fetchServerToAgent(agentToServer.instanceUid)
+            return ResponseEntity.ok(agent)
         } catch (e: Exception) {
             log.error("Error occurred while processing the request: $agentToServer", e)
             return ResponseEntity.badRequest().build()

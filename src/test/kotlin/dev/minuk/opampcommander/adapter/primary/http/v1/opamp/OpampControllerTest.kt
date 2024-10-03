@@ -3,11 +3,8 @@ package dev.minuk.opampcommander.adapter.primary.http.v1.opamp
 import com.github.f4b6a3.ulid.Ulid
 import com.google.protobuf.ByteString
 import com.ninjasquad.springmockk.MockkBean
-import dev.minuk.opampcommander.adapter.primary.http.api.v1.opamp.OpampController
-import dev.minuk.opampcommander.application.usecases.AgentExchangeRequest
-import dev.minuk.opampcommander.application.usecases.DisconnectUsecase
-import dev.minuk.opampcommander.application.usecases.ExchangeUsecase
-import dev.minuk.opampcommander.domain.models.agent.Agent
+import dev.minuk.opampcommander.application.usecases.FetchServerToAgentUsecase
+import dev.minuk.opampcommander.application.usecases.HandleAgentToServerUsecase
 import io.mockk.coEvery
 import opamp.proto.Opamp.AgentToServer
 import opamp.proto.Opamp.ServerToAgent
@@ -29,10 +26,10 @@ import java.util.zip.GZIPOutputStream
 @ExtendWith(SpringExtension::class)
 class OpampControllerTest {
     @MockkBean
-    lateinit var exchangeUsecase: ExchangeUsecase
+    lateinit var handleAgentToServerUsecase: HandleAgentToServerUsecase
 
     @MockkBean
-    lateinit var disconnectUsecase: DisconnectUsecase
+    lateinit var fetchServerToAgentUsecase: FetchServerToAgentUsecase
 
     @Autowired
     lateinit var webClient: WebTestClient
@@ -42,11 +39,9 @@ class OpampControllerTest {
         val instanceUid = Ulid.fast()
 
         // given
-        coEvery { exchangeUsecase.exchange(any()) } answers {
-            val request = firstArg<AgentExchangeRequest>()
-            Agent(request.instanceUid)
-        }
-        coEvery { disconnectUsecase.disconnect(any()) } returns Unit
+        coEvery { handleAgentToServerUsecase.handleAgentToServer(any()) } answers {}
+        coEvery { fetchServerToAgentUsecase.fetchServerToAgent(any<ByteString>()) } returns
+            ServerToAgent.newBuilder().setInstanceUid(ByteString.copyFrom(instanceUid.toBytes())).build()
 
         val request =
             AgentToServer
@@ -57,7 +52,7 @@ class OpampControllerTest {
         // when
         webClient
             .post()
-            .uri("/api/v1/opamp")
+            .uri("/v1/opamp")
             .contentType(MediaType.APPLICATION_PROTOBUF)
             .header("content-encoding", "gzip")
             .body(BodyInserters.fromValue(request.toByteArray().compressGzip()))

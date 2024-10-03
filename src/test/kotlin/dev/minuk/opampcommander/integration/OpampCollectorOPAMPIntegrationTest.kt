@@ -19,7 +19,7 @@ class OpampCollectorOPAMPIntegrationTest {
 
     @Test
     @Disabled
-    fun `otel-collector-contrib initialization with opamp extension`() {
+    fun `otel-collector-contrib initialization with opamp extension by http`() {
         val otelConfigYaml =
             """
             extensions:
@@ -27,7 +27,52 @@ class OpampCollectorOPAMPIntegrationTest {
               opamp:
                 server:
                   http:
-                    endpoint: "http://host.docker.internal:$localPort/api/v1/opamp"
+                    endpoint: "http://host.docker.internal:$localPort/v1/opamp"
+            receivers:
+              nop:
+            processors:
+              batch:
+            exporters:
+              nop:
+            service:
+              extensions: [opamp]
+              telemetry:
+                metrics:
+                  level: detailed
+                logs:
+                  level: DEBUG
+              pipelines:
+                metrics:
+                  receivers: [nop]
+                  processors: [batch]
+                  exporters: [nop]
+                
+            """.trimIndent()
+
+        val otelCollectorContainer =
+            GenericContainer(otelCollectorContainerImage)
+                .withCopyToContainer(
+                    Transferable.of(otelConfigYaml),
+                    "/etc/otelcol-contrib/config.yaml",
+                ).withStartupTimeout(Duration.ofSeconds(30))
+        otelCollectorContainer.start()
+        Thread.sleep(1000 * 60 * 60)
+        otelCollectorContainer.stop()
+    }
+
+    @Test
+    @Disabled
+    fun `otel-collector-contrib initialization with opamp extension by websocket`() {
+        val otelConfigYaml =
+            """
+            extensions:
+              health_check:
+              opamp:
+                server:
+                  ws:
+                    endpoint: "ws://host.docker.internal:$localPort/v1/opamp"
+                    tls:
+                      insecure: true
             receivers:
               nop:
             processors:
