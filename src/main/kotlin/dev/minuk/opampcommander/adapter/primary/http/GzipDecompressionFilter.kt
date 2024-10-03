@@ -67,10 +67,6 @@ class GzipDecompressionFilter : WebFilter {
     }
 }
 
-class IllegalGzipRequestException(
-    message: String,
-) : RuntimeException(message)
-
 object CompressionUtils {
     const val GZIP: String = "gzip"
     const val UNKNOWN: String = "unknown"

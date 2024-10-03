@@ -1,8 +1,8 @@
-package dev.minuk.opampcommander.adapter.primary.http.api.v1.opamp
+package dev.minuk.opampcommander.adapter.primary.http.v1.opamp
 
 import com.google.protobuf.ByteString
-import dev.minuk.opampcommander.adapter.primary.http.api.v1.opamp.mapper.OpampMapper.toAgentDisconnectRequest
-import dev.minuk.opampcommander.adapter.primary.http.api.v1.opamp.mapper.OpampMapper.toAgentExchangeRequest
+import dev.minuk.opampcommander.adapter.primary.http.v1.opamp.mapper.OpampMapper.toAgentDisconnectRequest
+import dev.minuk.opampcommander.adapter.primary.http.v1.opamp.mapper.OpampMapper.toAgentExchangeRequest
 import dev.minuk.opampcommander.application.usecases.DisconnectUsecase
 import dev.minuk.opampcommander.application.usecases.ExchangeUsecase
 import dev.minuk.opampcommander.util.Logger
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/api/v1/opamp")
+@RequestMapping("/v1/opamp")
 class OpampController(
     val exchangeUsecase: ExchangeUsecase,
     val disconnectUsecase: DisconnectUsecase,
@@ -63,7 +63,6 @@ class OpampController(
         @RequestBody agentToServer: Opamp.AgentToServer,
     ): ResponseEntity<Opamp.ServerToAgent> {
         try {
-            log.info("$agentToServer")
             val agent =
                 exchangeUsecase.exchange(
                     request = agentToServer.toAgentExchangeRequest(),

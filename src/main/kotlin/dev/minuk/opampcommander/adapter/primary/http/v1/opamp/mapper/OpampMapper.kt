@@ -1,4 +1,4 @@
-package dev.minuk.opampcommander.adapter.primary.http.api.v1.opamp.mapper
+package dev.minuk.opampcommander.adapter.primary.http.v1.opamp.mapper
 
 import com.github.f4b6a3.ulid.Ulid
 import com.google.protobuf.ByteString
