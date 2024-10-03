@@ -23,6 +23,6 @@ sequenceDiagram
   participant server as Opamp Commander
   
   user ->> server: Request to control agent
-  admin ->> server : Request to manager users & agents
+  admin ->> server: Request to manager users & agents
   agent -> server: Communicate OPAMP
 ```
