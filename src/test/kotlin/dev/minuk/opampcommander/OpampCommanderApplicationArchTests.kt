@@ -19,6 +19,7 @@ class OpampCommanderApplicationArchTests {
                     "dev.minuk.opampcommander.application.services..",
                     "dev.minuk.opampcommander.application.usecases..",
                 ).adapter("http", "dev.minuk.opampcommander.adapter.primary.http..")
+                .adapter("ws", "dev.minuk.opampcommander.adapter.primary.ws..")
                 .adapter("persistence", "dev.minuk.opampcommander.adapter.secondary.persistence..")
 
         rule.check(classes)

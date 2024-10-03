@@ -1,10 +1,8 @@
 package dev.minuk.opampcommander.adapter.primary.ws.api.v1.opamp
 
-import dev.minuk.opampcommander.adapter.primary.http.v1.opamp.mapper.OpampMapper.toAgentExchangeRequest
 import dev.minuk.opampcommander.adapter.primary.ws.config.OpampCommanderWebsocketHandler
-import dev.minuk.opampcommander.application.usecases.DisconnectUsecase
-import dev.minuk.opampcommander.application.usecases.ExchangeUsecase
-import dev.minuk.opampcommander.domain.models.agent.Agent
+import dev.minuk.opampcommander.application.usecases.FetchServerToAgentUsecase
+import dev.minuk.opampcommander.application.usecases.HandleAgentToServerUsecase
 import dev.minuk.opampcommander.util.Logger
 import kotlinx.coroutines.reactor.mono
 import opamp.proto.Opamp
@@ -16,8 +14,8 @@ import java.io.InputStream
 
 @Component
 class OpampWebsocketHandler(
-    val exchangeUsecase: ExchangeUsecase,
-    val disconnectUsecase: DisconnectUsecase,
+    private val handleAgentToServerUsecase: HandleAgentToServerUsecase,
+    private val fetchServerToAgentUsecase: FetchServerToAgentUsecase,
 ) : OpampCommanderWebsocketHandler {
     companion object {
         private val log by Logger()
@@ -26,7 +24,7 @@ class OpampWebsocketHandler(
     override val path: String = "/v1/opamp"
 
     override fun handle(session: WebSocketSession): Mono<Void> {
-        val input: Flux<Agent> =
+        val input: Flux<Unit> =
             session
                 .receive()
                 .map { message ->
@@ -36,23 +34,14 @@ class OpampWebsocketHandler(
                         header = payloadInputStream.readVarInt(),
                         data = payloadInputStream,
                     )
-                }.map { opampMessage ->
-                    log.info("Received message header: ${opampMessage.header}")
-                    val agentToServer = Opamp.AgentToServer.parseFrom(opampMessage.data)
-                    agentToServer
-                }.flatMap { agentToServer ->
-                    val agent =
-                        mono {
-                            exchangeUsecase.exchange(
-                                request = agentToServer.toAgentExchangeRequest(),
-                            )
-                        }
-
-                    // todo: disconnect
-                    // todo: connectionsettingsrequest
-                    agent
+                }.map { opampMessage -> Opamp.AgentToServer.parseFrom(opampMessage.data) }
+                .flatMap { agentToServer ->
+                    mono {
+                        handleAgentToServerUsecase.handleAgentToServer(agentToServer)
+                    }
                 }
-        // todo: output
+
+        // TODO: save instanceUid to session to make source of ServerToAgent's instanceUid
         // val output = session.send()
 
         // return Mono.zip(input, output).then()
