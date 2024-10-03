@@ -1,1 +1,1 @@
-rootProject.name = "otelcommander"
+rootProject.name = "opampcommander"
