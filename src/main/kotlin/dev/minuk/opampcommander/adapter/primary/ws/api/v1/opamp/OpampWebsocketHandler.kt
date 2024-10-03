@@ -18,39 +18,40 @@ import java.io.InputStream
 class OpampWebsocketHandler(
     val exchangeUsecase: ExchangeUsecase,
     val disconnectUsecase: DisconnectUsecase,
-): OpampCommanderWebsocketHandler {
+) : OpampCommanderWebsocketHandler {
     companion object {
         private val log by Logger()
     }
+
     override val path: String = "/v1/opamp"
 
     override fun handle(session: WebSocketSession): Mono<Void> {
-        val input: Flux<Agent> = session.receive()
-            .map { message ->
-                message.payload.asInputStream()
-            }
-            .map { payloadInputStream ->
-                OpampWebsocketMessageFormat(
-                    header = payloadInputStream.readVarInt(),
-                    data = payloadInputStream,
-                )
-            }
-            .map { opampMessage ->
-                log.info("Received message header: ${opampMessage.header}")
-                val agentToServer = Opamp.AgentToServer.parseFrom(opampMessage.data)
-                agentToServer
-            }
-            .flatMap { agentToServer ->
-                val agent = mono {
-                    exchangeUsecase.exchange(
-                        request = agentToServer.toAgentExchangeRequest(),
+        val input: Flux<Agent> =
+            session
+                .receive()
+                .map { message ->
+                    message.payload.asInputStream()
+                }.map { payloadInputStream ->
+                    OpampWebsocketMessageFormat(
+                        header = payloadInputStream.readVarInt(),
+                        data = payloadInputStream,
                     )
-                }
+                }.map { opampMessage ->
+                    log.info("Received message header: ${opampMessage.header}")
+                    val agentToServer = Opamp.AgentToServer.parseFrom(opampMessage.data)
+                    agentToServer
+                }.flatMap { agentToServer ->
+                    val agent =
+                        mono {
+                            exchangeUsecase.exchange(
+                                request = agentToServer.toAgentExchangeRequest(),
+                            )
+                        }
 
-                // todo: disconnect
-                // todo: connectionsettingsrequest
-                agent
-            }
+                    // todo: disconnect
+                    // todo: connectionsettingsrequest
+                    agent
+                }
         // todo: output
         // val output = session.send()
 
@@ -72,7 +73,6 @@ class OpampWebsocketHandler(
         } while (true)
         return value
     }
-
 }
 
 data class OpampWebsocketMessageFormat(

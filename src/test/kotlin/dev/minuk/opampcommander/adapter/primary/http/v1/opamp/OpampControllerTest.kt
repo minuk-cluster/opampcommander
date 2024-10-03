@@ -3,7 +3,6 @@ package dev.minuk.opampcommander.adapter.primary.http.v1.opamp
 import com.github.f4b6a3.ulid.Ulid
 import com.google.protobuf.ByteString
 import com.ninjasquad.springmockk.MockkBean
-import dev.minuk.opampcommander.adapter.primary.http.v1.opamp.OpampController
 import dev.minuk.opampcommander.application.usecases.AgentExchangeRequest
 import dev.minuk.opampcommander.application.usecases.DisconnectUsecase
 import dev.minuk.opampcommander.application.usecases.ExchangeUsecase

@@ -18,9 +18,7 @@ class WebsocketConfig {
     }
 
     @Bean
-    fun webSocketHandlerAdapter(): WebSocketHandlerAdapter {
-        return WebSocketHandlerAdapter()
-    }
+    fun webSocketHandlerAdapter(): WebSocketHandlerAdapter = WebSocketHandlerAdapter()
 }
 
 interface OpampCommanderWebsocketHandler : WebSocketHandler {
