@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.google.protobuf.gradle.protoc
-import org.apache.tools.ant.taskdefs.condition.Os
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
 
@@ -65,6 +64,8 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
 	implementation("com.github.f4b6a3:ulid-creator:5.2.3")
+
+	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0")
 
 	implementation("com.google.protobuf:protobuf-java:3.18.1")
 	implementation("com.google.protobuf:protobuf-java-util:3.18.1")

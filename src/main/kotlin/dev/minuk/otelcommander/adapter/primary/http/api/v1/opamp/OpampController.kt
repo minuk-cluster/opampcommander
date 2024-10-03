@@ -1,8 +1,8 @@
-package dev.minuk.otelcommander.adapter.primary.http.v1.opamp
+package dev.minuk.otelcommander.adapter.primary.http.api.v1.opamp
 
 import com.google.protobuf.ByteString
-import dev.minuk.otelcommander.adapter.primary.http.v1.opamp.mapper.OpampMapper.toAgentDisconnectRequest
-import dev.minuk.otelcommander.adapter.primary.http.v1.opamp.mapper.OpampMapper.toAgentExchangeRequest
+import dev.minuk.otelcommander.adapter.primary.http.api.v1.opamp.mapper.OpampMapper.toAgentDisconnectRequest
+import dev.minuk.otelcommander.adapter.primary.http.api.v1.opamp.mapper.OpampMapper.toAgentExchangeRequest
 import dev.minuk.otelcommander.application.usecases.DisconnectUsecase
 import dev.minuk.otelcommander.application.usecases.ExchangeUsecase
 import dev.minuk.otelcommander.util.Logger

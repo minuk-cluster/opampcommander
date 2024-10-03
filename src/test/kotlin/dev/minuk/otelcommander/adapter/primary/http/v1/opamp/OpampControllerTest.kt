@@ -3,6 +3,7 @@ package dev.minuk.otelcommander.adapter.primary.http.v1.opamp
 import com.github.f4b6a3.ulid.Ulid
 import com.google.protobuf.ByteString
 import com.ninjasquad.springmockk.MockkBean
+import dev.minuk.otelcommander.adapter.primary.http.api.v1.opamp.OpampController
 import dev.minuk.otelcommander.application.usecases.AgentExchangeRequest
 import dev.minuk.otelcommander.application.usecases.DisconnectUsecase
 import dev.minuk.otelcommander.application.usecases.ExchangeUsecase
