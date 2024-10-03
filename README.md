@@ -17,12 +17,12 @@
 
 ```mermaid
 sequenceDiagram
-  participant: server as Opamp Commander
-  participant: agent as Agent support OPAMP (e.g. OpenTelemetry Collector)
-  participant: user as Platform User
-  participant: admin as Platform Admin
+  actor user as User
+  actor admin as Admin
+  participant agent as Agent support OPAMP<br>(e.g. OpenTelemetry Collector)
+  participant server as Opamp Commander
   
   user ->> server: Request to control agent
   admin ->> server : Request to manager users & agents
-  agent <<->> server: Communicate OPAMP
+  agent -> server: Communicate OPAMP
 ```
