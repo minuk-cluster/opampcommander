@@ -1,6 +1,6 @@
 spring:
   application:
-    name: otelcommander
+    name: opampcommander
   data:
     mongodb:
       uri: ${MONGODB_URI:mongodb://root:example@localhost:27017/commander?authSource=admin}
@@ -18,7 +18,7 @@ springdoc:
   group-configs:
     - group: "admin"
       paths: "/v1/admin/**"
-      packagesToScan: "dev.minuk.otelcommander.adapter.primary.http.api.v1.admin"
+      packagesToScan: "dev.minuk.opampcommander.adapter.primary.http.api.v1.admin"
     - group: "opamp"
       paths: "/v1/opamp/**"
-      packagesToScan: "dev.minuk.otelcommander.adapter.primary.http.api.v1.opamp"
+      packagesToScan: "dev.minuk.opampcommander.adapter.primary.http.api.v1.opamp"
