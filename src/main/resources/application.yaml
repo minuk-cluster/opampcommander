@@ -11,3 +11,14 @@ server:
     enabled: true
     mime-types: application/x-protobuf
     min-response-size: 1B
+
+springdoc:
+  swagger-ui:
+    path: /docs
+  group-configs:
+    - group: "admin"
+      paths: "/v1/admin/**"
+      packagesToScan: "dev.minuk.otelcommander.adapter.primary.http.api.v1.admin"
+    - group: "opamp"
+      paths: "/v1/opamp/**"
+      packagesToScan: "dev.minuk.otelcommander.adapter.primary.http.api.v1.opamp"

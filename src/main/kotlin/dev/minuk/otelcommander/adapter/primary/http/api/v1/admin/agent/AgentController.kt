@@ -1,4 +1,4 @@
-package dev.minuk.otelcommander.adapter.primary.http.v1.agent
+package dev.minuk.otelcommander.adapter.primary.http.api.v1.admin.agent
 
 import dev.minuk.otelcommander.application.usecases.AgentAdminUsecase
 import dev.minuk.otelcommander.domain.models.Sort
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/agent")
+@RequestMapping("/api/v1/admin/agent")
 class AgentController(
     val agentUsecase: AgentAdminUsecase,
 ) {
