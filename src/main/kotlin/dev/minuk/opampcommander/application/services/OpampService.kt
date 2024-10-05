@@ -361,12 +361,14 @@ class OpampService(
                 .newBuilder()
                 .setVersion(version)
                 .setHash(ByteString.copyFrom(hash))
-                .setFile(Opamp.DownloadableFile.newBuilder()
-                    .setHeaders(file.headers.toProto())
-                    .setDownloadUrl(file.downloadUrl)
-                    .setContentHash(ByteString.copyFrom(file.contentHash))
-                    .setSignature(ByteString.copyFrom(file.signature))
-                    .build()
+                .setFile(
+                    Opamp.DownloadableFile
+                        .newBuilder()
+                        .setHeaders(file.headers.toProto())
+                        .setDownloadUrl(file.downloadUrl)
+                        .setContentHash(ByteString.copyFrom(file.contentHash))
+                        .setSignature(ByteString.copyFrom(file.signature))
+                        .build(),
                 )
         return builder.build()
     }

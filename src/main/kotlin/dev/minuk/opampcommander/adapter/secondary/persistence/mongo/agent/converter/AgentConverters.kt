@@ -73,9 +73,10 @@ class EffectiveConfigReadConverter : Converter<Document, EffectiveConfig> {
             }
 
             return AgentConfigMap(
-                configMap = source.get("configMap", Document::class.java).mapValues {
-                    agentConfigFileSubReadConverter.convert(it.value as Document)
-                }
+                configMap =
+                    source.get("configMap", Document::class.java).mapValues {
+                        agentConfigFileSubReadConverter.convert(it.value as Document)
+                    },
             )
         }
 
@@ -115,16 +116,17 @@ class EffectiveConfigWriteConverter : Converter<EffectiveConfig, Document> {
         val schemaVersion: SchemaVersion = SchemaVersion.V1
         val agentConfigFileWriteConverter = AgentConfigFileWriteConverter()
 
-        override fun convert(source: AgentConfigMap): Document {
-            return Document()
+        override fun convert(source: AgentConfigMap): Document =
+            Document()
                 .append("schemaVersion", schemaVersion.toString())
-                .append("configMap", source.configMap.mapValues {
-                    agentConfigFileWriteConverter.convert(it.value)
-                })
-        }
+                .append(
+                    "configMap",
+                    source.configMap.mapValues {
+                        agentConfigFileWriteConverter.convert(it.value)
+                    },
+                )
 
-
-        class AgentConfigFileWriteConverter: Converter<AgentConfigFile, Document> {
+        class AgentConfigFileWriteConverter : Converter<AgentConfigFile, Document> {
             val schemaVersion: SchemaVersion = SchemaVersion.V1
 
             override fun convert(source: AgentConfigFile): Document =
