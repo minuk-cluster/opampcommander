@@ -1,11 +1,13 @@
 package dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent
 
+import com.github.f4b6a3.ulid.Ulid
 import dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.document.AgentDocument
 import dev.minuk.opampcommander.domain.models.agent.Agent
 import dev.minuk.opampcommander.domain.port.secondary.agent.AgentOperationsPort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Component
 class AgentMongoAdapter(
     val reactiveMongoTemplate: ReactiveMongoTemplate,
 ) : AgentOperationsPort {
-    override suspend fun getAgentByInstanceUid(instanceUid: String): Agent {
+    override suspend fun getAgentByInstanceUid(instanceUid: Ulid): Agent? {
         val query = Query.query(Criteria.where("instanceUid").`is`(instanceUid))
         return reactiveMongoTemplate
             .findOne(query, AgentDocument::class.java)
@@ -29,7 +31,7 @@ class AgentMongoAdapter(
                     componentHealth = it.componentHealth,
                     customCapabilities = it.customCapabilities,
                 )
-            }.awaitSingle()
+            }.awaitSingleOrNull()
     }
 
     override suspend fun getAgents(): Flow<Agent> =

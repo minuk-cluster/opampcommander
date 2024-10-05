@@ -21,7 +21,7 @@ class AgentService(
         val log by Logger()
     }
 
-    override suspend fun getAgent(instanceUid: Ulid): Agent? = null
+    override suspend fun getAgent(instanceUid: Ulid): Agent? = agentOperationsPort.getAgentByInstanceUid(instanceUid)
 
     override suspend fun upsertAgent(agent: Agent): Agent = agentOperationsPort.saveAgent(agent)
 
