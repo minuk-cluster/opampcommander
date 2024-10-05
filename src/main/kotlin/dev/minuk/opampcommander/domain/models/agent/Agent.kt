@@ -21,7 +21,7 @@ data class Agent(
         customCapabilities = CustomCapabilities.empty(),
     )
 
-    fun update(
+    fun report(
         newAgentDescription: AgentDescription? = null,
         newComponentHealth: ComponentHealth? = null,
         newEffectiveConfig: EffectiveConfig? = null,

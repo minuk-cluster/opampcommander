@@ -36,7 +36,7 @@ class OpampService(
 
         val agent = getAgentInternalUsecase.getAgent(instanceUid = instanceUid) ?: Agent(instanceUid = instanceUid)
         val updatedAgent =
-            agent.update(
+            agent.report(
                 newAgentDescription =
                     if (agentToServer.hasAgentDescription()) {
                         agentToServer.agentDescription.toDomain()
