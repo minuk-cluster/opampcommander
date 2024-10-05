@@ -1,14 +1,12 @@
 package dev.minuk.opampcommander.domain.models.agent
 
 data class EffectiveConfig(
-    val configMap: Map<String, AgentConfigMap>,
+    val configMap: AgentConfigMap,
 ) {
     companion object {
-        fun empty(): EffectiveConfig = EffectiveConfig(mapOf())
+        fun empty(): EffectiveConfig =
+            EffectiveConfig(
+                configMap = AgentConfigMap.empty(),
+            )
     }
-
-    data class AgentConfigMap(
-        val body: String,
-        val contentType: String,
-    )
 }

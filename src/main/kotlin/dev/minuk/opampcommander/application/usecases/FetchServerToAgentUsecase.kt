@@ -5,7 +5,7 @@ import com.google.protobuf.ByteString
 import opamp.proto.Opamp
 
 interface FetchServerToAgentUsecase {
-    suspend fun fetchServerToAgent(instanceUid: ByteString): Opamp.ServerToAgent? = fetchServerToAgent(Ulid.from(instanceUid.toByteArray()))
+    suspend fun fetchServerToAgent(instanceUid: ByteString): Opamp.ServerToAgent = fetchServerToAgent(Ulid.from(instanceUid.toByteArray()))
 
-    suspend fun fetchServerToAgent(instanceUid: Ulid): Opamp.ServerToAgent?
+    suspend fun fetchServerToAgent(instanceUid: Ulid): Opamp.ServerToAgent
 }

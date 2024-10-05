@@ -2,6 +2,8 @@ package dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.conve
 
 import dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.config.MongodbReadingConverter
 import dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.config.MongodbWritingConverter
+import dev.minuk.opampcommander.domain.models.agent.AgentConfigFile
+import dev.minuk.opampcommander.domain.models.agent.AgentConfigMap
 import dev.minuk.opampcommander.domain.models.agent.AgentDescription
 import dev.minuk.opampcommander.domain.models.agent.CommunicationStatus
 import dev.minuk.opampcommander.domain.models.agent.ComponentHealth
@@ -57,25 +59,39 @@ class EffectiveConfigReadConverter : Converter<Document, EffectiveConfig> {
         }
 
         return EffectiveConfig(
-            configMap =
-                (source.get("configMap") as Document).mapValues {
-                    agentConfigMapSubReadConverter.convert(it.value as Document)
-                },
+            configMap = agentConfigMapSubReadConverter.convert(source.get("configMap", Document::class.java)),
         )
     }
 
-    class AgentConfigMapSubReadConverter : Converter<Document, EffectiveConfig.AgentConfigMap> {
+    class AgentConfigMapSubReadConverter : Converter<Document, AgentConfigMap> {
         val supportSchemaVersion: Set<SchemaVersion> = setOf(SchemaVersion.V1)
+        val agentConfigFileSubReadConverter = AgentConfigFileSubReadConverter()
 
-        override fun convert(source: Document): EffectiveConfig.AgentConfigMap {
+        override fun convert(source: Document): AgentConfigMap {
             if (source["schemaVersion"] !in supportSchemaVersion) {
                 throw IllegalArgumentException("Unsupported schema version")
             }
 
-            return EffectiveConfig.AgentConfigMap(
-                body = source.getString("body"),
-                contentType = source.getString("contentType"),
+            return AgentConfigMap(
+                configMap = source.get("configMap", Document::class.java).mapValues {
+                    agentConfigFileSubReadConverter.convert(it.value as Document)
+                }
             )
+        }
+
+        class AgentConfigFileSubReadConverter : Converter<Document, AgentConfigFile> {
+            val supportSchemaVersion: Set<SchemaVersion> = setOf(SchemaVersion.V1)
+
+            override fun convert(source: Document): AgentConfigFile {
+                if (source["schemaVersion"] !in supportSchemaVersion) {
+                    throw IllegalArgumentException("Unsupported schema version")
+                }
+
+                return AgentConfigFile(
+                    body = source.get("body", ByteArray::class.java),
+                    contentType = source.getString("contentType"),
+                )
+            }
         }
     }
 }
@@ -91,20 +107,32 @@ class EffectiveConfigWriteConverter : Converter<EffectiveConfig, Document> {
             .append("schemaVersion", schemaVersion.toString())
             .append(
                 "configMap",
-                source.configMap.mapValues {
-                    agentConfigMapSubWriteConverter.convert(it.value)
-                },
+                agentConfigMapSubWriteConverter.convert(source.configMap),
             )
     }
 
-    class AgentConfigMapSubWriteConverter : Converter<EffectiveConfig.AgentConfigMap, Document> {
+    class AgentConfigMapSubWriteConverter : Converter<AgentConfigMap, Document> {
         val schemaVersion: SchemaVersion = SchemaVersion.V1
+        val agentConfigFileWriteConverter = AgentConfigFileWriteConverter()
 
-        override fun convert(source: EffectiveConfig.AgentConfigMap): Document =
-            Document()
+        override fun convert(source: AgentConfigMap): Document {
+            return Document()
                 .append("schemaVersion", schemaVersion.toString())
-                .append("body", source.body)
-                .append("contentType", source.contentType)
+                .append("configMap", source.configMap.mapValues {
+                    agentConfigFileWriteConverter.convert(it.value)
+                })
+        }
+
+
+        class AgentConfigFileWriteConverter: Converter<AgentConfigFile, Document> {
+            val schemaVersion: SchemaVersion = SchemaVersion.V1
+
+            override fun convert(source: AgentConfigFile): Document =
+                Document()
+                    .append("schemaVersion", schemaVersion.toString())
+                    .append("body", source.body)
+                    .append("contentType", source.contentType)
+        }
     }
 }
 

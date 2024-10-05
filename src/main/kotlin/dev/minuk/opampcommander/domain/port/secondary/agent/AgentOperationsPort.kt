@@ -1,5 +1,6 @@
 package dev.minuk.opampcommander.domain.port.secondary.agent
 
+import com.github.f4b6a3.ulid.Ulid
 import dev.minuk.opampcommander.domain.models.agent.Agent
 import kotlinx.coroutines.flow.Flow
 
@@ -9,7 +10,7 @@ interface AgentOperationsPort :
     SaveAgentOperation
 
 interface GetAgentOperation {
-    suspend fun getAgentByInstanceUid(instanceUid: String): Agent
+    suspend fun getAgentByInstanceUid(instanceUid: Ulid): Agent?
 }
 
 interface GetAgentsOperation {
