@@ -37,31 +37,31 @@ class OpampService(
         val agent = getAgentInternalUsecase.getAgent(instanceUid = instanceUid) ?: Agent(instanceUid = instanceUid)
         val updatedAgent =
             agent.report(
-                newAgentDescription =
+                reportedAgentDescription =
                     if (agentToServer.hasAgentDescription()) {
                         agentToServer.agentDescription.toDomain()
                     } else {
                         null
                     },
-                newComponentHealth =
+                reportedComponentHealth =
                     if (agentToServer.hasHealth()) {
                         agentToServer.health.toDomain()
                     } else {
                         null
                     },
-                newEffectiveConfig =
+                reportedEffectiveConfig =
                     if (agentToServer.hasEffectiveConfig()) {
                         agentToServer.effectiveConfig.toDomain()
                     } else {
                         null
                     },
-                newPackageStatuses =
+                reportedPackageStatuses =
                     if (agentToServer.hasPackageStatuses()) {
                         agentToServer.packageStatuses.toDomain()
                     } else {
                         null
                     },
-                newCustomCapabilities =
+                reportedCustomCapabilities =
                     if (agentToServer.hasCustomCapabilities()) {
                         agentToServer.customCapabilities.toDomain()
                     } else {

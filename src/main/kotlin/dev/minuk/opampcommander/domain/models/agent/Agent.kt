@@ -22,20 +22,20 @@ data class Agent(
     )
 
     fun report(
-        newAgentDescription: AgentDescription? = null,
-        newComponentHealth: ComponentHealth? = null,
-        newEffectiveConfig: EffectiveConfig? = null,
-        newPackageStatuses: PackageStatuses? = null,
-        newCustomCapabilities: CustomCapabilities? = null,
+        reportedAgentDescription: AgentDescription? = null,
+        reportedComponentHealth: ComponentHealth? = null,
+        reportedEffectiveConfig: EffectiveConfig? = null,
+        reportedPackageStatuses: PackageStatuses? = null,
+        reportedCustomCapabilities: CustomCapabilities? = null,
     ): Agent =
         Agent(
             instanceUid = this.instanceUid,
-            agentDescription = newAgentDescription ?: this.agentDescription,
-            componentHealth = newComponentHealth ?: this.componentHealth,
-            effectiveConfig = newEffectiveConfig ?: this.effectiveConfig,
+            agentDescription = reportedAgentDescription ?: this.agentDescription,
+            componentHealth = reportedComponentHealth ?: this.componentHealth,
+            effectiveConfig = reportedEffectiveConfig ?: this.effectiveConfig,
             communicationStatus = this.communicationStatus,
-            packageStatuses = newPackageStatuses ?: this.packageStatuses,
-            customCapabilities = newCustomCapabilities ?: this.customCapabilities,
+            packageStatuses = reportedPackageStatuses ?: this.packageStatuses,
+            customCapabilities = reportedCustomCapabilities ?: this.customCapabilities,
         )
 
     val os: Os
