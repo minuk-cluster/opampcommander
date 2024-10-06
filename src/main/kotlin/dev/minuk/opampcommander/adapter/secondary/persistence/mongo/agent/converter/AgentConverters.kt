@@ -25,7 +25,7 @@ class AgentDescriptionReadConverter : Converter<Document, AgentDescription> {
     val supportSchemaVersion: Set<SchemaVersion> = setOf(SchemaVersion.V1)
 
     override fun convert(source: Document): AgentDescription {
-        if (source["schemaVersion"] !in supportSchemaVersion) {
+        if (SchemaVersion.valueOf(source.getString("schemaVersion")) !in supportSchemaVersion) {
             throw IllegalArgumentException("Unsupported schema version")
         }
 
@@ -54,7 +54,7 @@ class EffectiveConfigReadConverter : Converter<Document, EffectiveConfig> {
     val agentConfigMapSubReadConverter = AgentConfigMapSubReadConverter()
 
     override fun convert(source: Document): EffectiveConfig {
-        if (source["schemaVersion"] !in supportSchemaVersion) {
+        if (SchemaVersion.valueOf(source.getString("schemaVersion")) !in supportSchemaVersion) {
             throw IllegalArgumentException("Unsupported schema version")
         }
 
@@ -68,7 +68,7 @@ class EffectiveConfigReadConverter : Converter<Document, EffectiveConfig> {
         val agentConfigFileSubReadConverter = AgentConfigFileSubReadConverter()
 
         override fun convert(source: Document): AgentConfigMap {
-            if (source["schemaVersion"] !in supportSchemaVersion) {
+            if (SchemaVersion.valueOf(source.getString("schemaVersion")) !in supportSchemaVersion) {
                 throw IllegalArgumentException("Unsupported schema version")
             }
 
@@ -84,7 +84,7 @@ class EffectiveConfigReadConverter : Converter<Document, EffectiveConfig> {
             val supportSchemaVersion: Set<SchemaVersion> = setOf(SchemaVersion.V1)
 
             override fun convert(source: Document): AgentConfigFile {
-                if (source["schemaVersion"] !in supportSchemaVersion) {
+                if (SchemaVersion.valueOf(source.getString("schemaVersion")) !in supportSchemaVersion) {
                     throw IllegalArgumentException("Unsupported schema version")
                 }
 
@@ -143,7 +143,7 @@ class CommunicationStatusReadConverter : Converter<Document, CommunicationStatus
     val supportSchemaVersion: Set<SchemaVersion> = setOf(SchemaVersion.V1)
 
     override fun convert(source: Document): CommunicationStatus {
-        if (source["schemaVersion"] !in supportSchemaVersion) {
+        if (SchemaVersion.valueOf(source.getString("schemaVersion")) !in supportSchemaVersion) {
             throw IllegalArgumentException("Unsupported schema version")
         }
 
@@ -169,7 +169,7 @@ class PackageStatuesReadConverter : Converter<Document, PackageStatuses> {
     val packageStatusReadConverter = PackageStatusReadConverter()
 
     override fun convert(source: Document): PackageStatuses {
-        if (source["schemaVersion"] !in supportSchemaVersion) {
+        if (SchemaVersion.valueOf(source.getString("schemaVersion")) !in supportSchemaVersion) {
             throw IllegalArgumentException("Unsupported schema version")
         }
 
@@ -188,7 +188,7 @@ class PackageStatuesReadConverter : Converter<Document, PackageStatuses> {
         val supportSchemaVersion: Set<SchemaVersion> = setOf(SchemaVersion.V1)
 
         override fun convert(source: Document): PackageStatus {
-            if (source["schemaVersion"] !in supportSchemaVersion) {
+            if (SchemaVersion.valueOf(source.getString("schemaVersion")) !in supportSchemaVersion) {
                 throw IllegalArgumentException("Unsupported schema version")
             }
 
@@ -244,7 +244,7 @@ class ComponentHealthReadConverter : Converter<Document, ComponentHealth> {
     val supportSchemaVersion: Set<SchemaVersion> = setOf(SchemaVersion.V1)
 
     override fun convert(source: Document): ComponentHealth {
-        if (source["schemaVersion"] !in supportSchemaVersion) {
+        if (SchemaVersion.valueOf(source.getString("schemaVersion")) !in supportSchemaVersion) {
             throw IllegalArgumentException("Unsupported schema version")
         }
 
@@ -289,7 +289,7 @@ class CustomCapabilitiesReadConverter : Converter<Document, CustomCapabilities> 
     val supportSchemaVersion: Set<SchemaVersion> = setOf(SchemaVersion.V1)
 
     override fun convert(source: Document): CustomCapabilities {
-        if (source["schemaVersion"] !in supportSchemaVersion) {
+        if (SchemaVersion.valueOf(source.getString("schemaVersion")) !in supportSchemaVersion) {
             throw IllegalArgumentException("Unsupported schema version")
         }
 

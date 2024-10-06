@@ -1,4 +1,4 @@
-package dev.minuk.opampcommander.adapter.primary.ws.api.v1.opamp
+package dev.minuk.opampcommander.adapter.primary.ws.v1.opamp
 
 import dev.minuk.opampcommander.adapter.primary.ws.config.OpampCommanderWebsocketHandler
 import dev.minuk.opampcommander.application.usecases.FetchServerToAgentUsecase
@@ -21,7 +21,9 @@ class OpampWebsocketHandler(
         private val log by Logger()
     }
 
-    override val path: String = "/v1/opamp"
+    // TODO: Change to /v1/opamp
+    //       To avoid conflict with OpampController's path
+    override val path: String = "/ws/v1/opamp"
 
     override fun handle(session: WebSocketSession): Mono<Void> {
         val input: Flux<Unit> =

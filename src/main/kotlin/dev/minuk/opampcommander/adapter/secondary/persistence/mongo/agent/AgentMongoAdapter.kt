@@ -18,12 +18,12 @@ class AgentMongoAdapter(
     val reactiveMongoTemplate: ReactiveMongoTemplate,
 ) : AgentOperationsPort {
     override suspend fun getAgentByInstanceUid(instanceUid: Ulid): Agent? {
-        val query = Query.query(Criteria.where("instanceUid").`is`(instanceUid))
+        val query = Query.query(Criteria.where("instanceUid").`is`(instanceUid.toUuid()))
         return reactiveMongoTemplate
             .findOne(query, AgentDocument::class.java)
             .map {
                 Agent(
-                    instanceUid = it.instanceUid,
+                    instanceUid = Ulid.from(it.instanceUid),
                     agentDescription = it.agentDescription,
                     effectiveConfig = it.effectiveConfig,
                     communicationStatus = it.communicationStatus,
@@ -39,7 +39,7 @@ class AgentMongoAdapter(
             .findAll(AgentDocument::class.java)
             .map {
                 Agent(
-                    instanceUid = it.instanceUid,
+                    instanceUid = Ulid.from(it.instanceUid),
                     agentDescription = it.agentDescription,
                     effectiveConfig = it.effectiveConfig,
                     communicationStatus = it.communicationStatus,
@@ -52,7 +52,7 @@ class AgentMongoAdapter(
     override suspend fun saveAgent(agent: Agent): Agent {
         val agentDocument =
             AgentDocument(
-                instanceUid = agent.instanceUid,
+                instanceUid = agent.instanceUid.toUuid(),
                 agentDescription = agent.agentDescription,
                 effectiveConfig = agent.effectiveConfig,
                 communicationStatus = agent.communicationStatus,
@@ -64,7 +64,7 @@ class AgentMongoAdapter(
             .save(agentDocument)
             .map {
                 Agent(
-                    instanceUid = it.instanceUid,
+                    instanceUid = Ulid.from(it.instanceUid),
                     agentDescription = it.agentDescription,
                     effectiveConfig = it.effectiveConfig,
                     communicationStatus = it.communicationStatus,
