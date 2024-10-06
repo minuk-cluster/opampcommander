@@ -48,19 +48,4 @@ data class Agent(
     fun applyRemoteConfig(newRemoteConfig: AgentRemoteConfig) {
         TODO("Not yet implemented")
     }
-
-    fun toServerToAgent(): ServerToAgent =
-        ServerToAgent(
-            instanceUid = instanceUid,
-            errorResponse = null,
-            remoteConfig = null,
-            connectionSettings = null,
-            packagesAvailable = null,
-            flags = null,
-            capabilities = null,
-            agentIdentification = null,
-            command = null,
-            customCapabilities = null,
-            customMessage = null,
-        )
 }

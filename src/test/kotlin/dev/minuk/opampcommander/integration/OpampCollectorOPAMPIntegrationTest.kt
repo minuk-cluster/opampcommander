@@ -70,7 +70,7 @@ class OpampCollectorOPAMPIntegrationTest {
               opamp:
                 server:
                   ws:
-                    endpoint: "ws://host.docker.internal:$localPort/v1/opamp"
+                    endpoint: "ws://host.docker.internal:$localPort/ws/v1/opamp"
                     tls:
                       insecure: true
             receivers:

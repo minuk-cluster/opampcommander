@@ -1,4 +1,4 @@
-package dev.minuk.opampcommander.domain.models.agent
+package dev.minuk.opampcommander.domain.models.command
 
 import com.github.f4b6a3.ulid.Ulid
 import java.time.Duration
@@ -15,7 +15,21 @@ data class ServerToAgent(
     val command: ServerToAgentCommand?,
     val customCapabilities: CustomCapabilities?,
     val customMessage: CustomMessage?,
-)
+) {
+    constructor(instanceUid: Ulid) : this(
+        instanceUid = instanceUid,
+        errorResponse = null,
+        remoteConfig = null,
+        connectionSettings = null,
+        packagesAvailable = null,
+        flags = null,
+        capabilities = null,
+        agentIdentification = null,
+        command = null,
+        customCapabilities = null,
+        customMessage = null,
+    )
+}
 
 data class PackagesAvailable(
     val packages: Map<String, PackageAvailable>,
@@ -117,6 +131,10 @@ data class OtherConnectionSettings(
 data class ServerToAgentFlags(
     val flags: Set<Flag>,
 ) {
+    constructor() : this(emptySet())
+
+    constructor(vararg initialFlags: Flag) : this(initialFlags.toSet())
+
     enum class Flag(
         val value: Int,
     ) {
@@ -128,6 +146,10 @@ data class ServerToAgentFlags(
             fun of(value: Int): Flag = entries.find { it.value == value }!!
         }
     }
+
+    fun turnOn(flag: Flag): ServerToAgentFlags = copy(flags = flags + flag)
+
+    operator fun plus(other: ServerToAgentFlags?): ServerToAgentFlags = ServerToAgentFlags(flags + (other?.flags ?: emptySet()))
 }
 
 data class ServerCapabilities(
