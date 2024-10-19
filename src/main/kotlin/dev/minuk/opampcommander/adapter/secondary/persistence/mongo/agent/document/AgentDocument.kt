@@ -15,7 +15,7 @@ import java.util.UUID
 data class AgentDocument(
     @Id
     var id: String? = null,
-    @Indexed
+    @Indexed(unique = true)
     val instanceUid: UUID,
     val agentDescription: AgentDescription,
     val effectiveConfig: EffectiveConfig,

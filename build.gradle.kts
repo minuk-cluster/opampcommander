@@ -34,7 +34,7 @@ sourceSets {
 }
 
 protobuf.protobuf.protoc {
-		artifact = "com.google.protobuf:protoc:3.18.1"
+	artifact = "com.google.protobuf:protoc:3.18.1"
 }
 
 group = "dev.minuk"
@@ -97,6 +97,14 @@ kotlin {
 	}
 }
 
+tasks {
+	withType<Copy> {
+		filesMatching("**/*.proto") {
+			duplicatesStrategy = DuplicatesStrategy.INCLUDE
+		}
+	}
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
 	jvmArgs("-Xshare:off")
@@ -105,14 +113,6 @@ tasks.withType<Test> {
 tasks.withType<KotlinCompile>().all {
 	kotlinOptions {
 		jvmTarget = "17"
-	}
-}
-
-tasks {
-	withType<Copy> {
-		filesMatching("**/*.proto") {
-			duplicatesStrategy = DuplicatesStrategy.INCLUDE
-		}
 	}
 }
 
