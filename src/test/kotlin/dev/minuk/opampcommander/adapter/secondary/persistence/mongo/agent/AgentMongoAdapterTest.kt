@@ -1,6 +1,7 @@
 package dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent
 
 import com.github.f4b6a3.ulid.Ulid
+import dev.minuk.opampcommander.TestcontainersConfiguration
 import dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.document.AgentDocument
 import dev.minuk.opampcommander.domain.models.agent.Agent
 import dev.minuk.opampcommander.domain.models.agent.AgentDescription
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
+import org.springframework.context.annotation.Import
 import org.springframework.data.mongodb.core.ReactiveMongoOperations
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
@@ -24,6 +26,7 @@ import reactor.test.StepVerifier
 import kotlin.test.assertNull
 
 @RunWith(SpringRunner::class)
+@Import(TestcontainersConfiguration::class)
 @DataMongoTest
 class AgentMongoAdapterTest(
     @Autowired
