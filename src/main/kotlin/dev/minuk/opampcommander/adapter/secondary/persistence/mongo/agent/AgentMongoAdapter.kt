@@ -8,18 +8,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.ReactiveMongoOperations
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Component
 
 @Component
 class AgentMongoAdapter(
-    val reactiveMongoTemplate: ReactiveMongoTemplate,
+    val reactiveMongoOperations: ReactiveMongoOperations,
 ) : AgentOperationsPort {
     override suspend fun getAgentByInstanceUid(instanceUid: Ulid): Agent? {
         val query = Query.query(Criteria.where("instanceUid").`is`(instanceUid.toUuid()))
-        return reactiveMongoTemplate
+        return reactiveMongoOperations
             .findOne(query, AgentDocument::class.java)
             .map {
                 Agent(
@@ -35,7 +35,7 @@ class AgentMongoAdapter(
     }
 
     override suspend fun getAgents(): Flow<Agent> =
-        reactiveMongoTemplate
+        reactiveMongoOperations
             .findAll(AgentDocument::class.java)
             .map {
                 Agent(
@@ -60,7 +60,7 @@ class AgentMongoAdapter(
                 componentHealth = agent.componentHealth,
                 customCapabilities = agent.customCapabilities,
             )
-        return reactiveMongoTemplate
+        return reactiveMongoOperations
             .save(agentDocument)
             .map {
                 Agent(
