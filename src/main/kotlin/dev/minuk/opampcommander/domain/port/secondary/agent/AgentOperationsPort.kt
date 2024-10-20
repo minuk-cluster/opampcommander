@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.Flow
 interface AgentOperationsPort :
     GetAgentOperation,
     GetAgentsOperation,
-    SaveAgentOperation
+    SaveAgentOperation,
+    CountAgentsOperation
 
 interface GetAgentOperation {
     suspend fun getAgentByInstanceUid(instanceUid: Ulid): Agent?
@@ -19,4 +20,8 @@ interface GetAgentsOperation {
 
 interface SaveAgentOperation {
     suspend fun saveAgent(agent: Agent): Agent
+}
+
+interface CountAgentsOperation {
+    suspend fun countAgents(): Long
 }
