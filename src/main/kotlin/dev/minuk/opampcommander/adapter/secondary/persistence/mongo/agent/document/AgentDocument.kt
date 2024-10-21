@@ -1,5 +1,6 @@
 package dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.document
 
+import dev.minuk.opampcommander.domain.models.agent.AgentCapabilities
 import dev.minuk.opampcommander.domain.models.agent.AgentDescription
 import dev.minuk.opampcommander.domain.models.agent.CommunicationStatus
 import dev.minuk.opampcommander.domain.models.agent.ComponentHealth
@@ -17,10 +18,11 @@ data class AgentDocument(
     var id: String? = null,
     @Indexed(unique = true)
     val instanceUid: UUID,
-    val agentDescription: AgentDescription,
-    val effectiveConfig: EffectiveConfig,
-    val communicationStatus: CommunicationStatus,
-    val packageStatuses: PackageStatuses,
-    val componentHealth: ComponentHealth,
-    val customCapabilities: CustomCapabilities,
+    val capabilities: AgentCapabilities?,
+    val agentDescription: AgentDescription?,
+    val effectiveConfig: EffectiveConfig?,
+    val communicationStatus: CommunicationStatus?,
+    val packageStatuses: PackageStatuses?,
+    val componentHealth: ComponentHealth?,
+    val customCapabilities: CustomCapabilities?,
 )

@@ -1,5 +1,6 @@
 package dev.minuk.opampcommander.application.services.mapper
 
+import dev.minuk.opampcommander.domain.models.agent.AgentCapabilities
 import dev.minuk.opampcommander.domain.models.agent.AgentConfigFile
 import dev.minuk.opampcommander.domain.models.agent.AgentConfigMap
 import dev.minuk.opampcommander.domain.models.agent.AgentDescription
@@ -34,6 +35,10 @@ fun Opamp.AgentDescription.toDomain(): AgentDescription =
                 it.key to it.value.stringValue
             },
     )
+
+fun Long.toDomain(): AgentCapabilities {
+    return AgentCapabilities.of(this)
+}
 
 fun Opamp.EffectiveConfig.toDomain(): EffectiveConfig =
     EffectiveConfig(
@@ -75,7 +80,7 @@ fun Opamp.PackageStatuses.toDomain(): PackageStatuses =
                     errorMessage = it.value.errorMessage,
                 )
             },
-        serverProvidedAllPackagesHash = serverProvidedAllPackagesHash.toString(),
+        serverProvidedAllPackagesHash = serverProvidedAllPackagesHash.toByteArray(),
         errorMessage = errorMessage,
     )
 

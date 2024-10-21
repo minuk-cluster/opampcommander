@@ -2,14 +2,14 @@ package dev.minuk.opampcommander.domain.models.agent
 
 data class PackageStatuses(
     val packages: Map<String, PackageStatus>,
-    val serverProvidedAllPackagesHash: String,
+    val serverProvidedAllPackagesHash: ByteArray,
     val errorMessage: String,
 ) {
     companion object {
         fun empty(): PackageStatuses =
             PackageStatuses(
                 packages = mapOf(),
-                serverProvidedAllPackagesHash = "",
+                serverProvidedAllPackagesHash = ByteArray(0),
                 errorMessage = "",
             )
     }

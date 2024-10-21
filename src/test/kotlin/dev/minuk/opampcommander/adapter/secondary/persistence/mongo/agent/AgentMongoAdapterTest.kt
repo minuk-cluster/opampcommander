@@ -4,6 +4,7 @@ import com.github.f4b6a3.ulid.Ulid
 import dev.minuk.opampcommander.TestcontainersConfiguration
 import dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.document.AgentDocument
 import dev.minuk.opampcommander.domain.models.agent.Agent
+import dev.minuk.opampcommander.domain.models.agent.AgentCapabilities
 import dev.minuk.opampcommander.domain.models.agent.AgentDescription
 import dev.minuk.opampcommander.domain.models.agent.CommunicationStatus
 import dev.minuk.opampcommander.domain.models.agent.ComponentHealth
@@ -101,6 +102,7 @@ class AgentMongoAdapterTest(
     private fun emptyAgentDocument() =
         AgentDocument(
             instanceUid = Ulid.fast().toUuid(),
+            capabilities = AgentCapabilities.empty(),
             agentDescription =
                 AgentDescription(
                     identifyingAttributes = emptyMap(),

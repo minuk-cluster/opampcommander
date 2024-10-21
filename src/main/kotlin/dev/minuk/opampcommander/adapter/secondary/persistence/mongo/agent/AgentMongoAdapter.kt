@@ -25,6 +25,7 @@ class AgentMongoAdapter(
             .map {
                 Agent(
                     instanceUid = Ulid.from(it.instanceUid),
+                    capabilities = it.capabilities,
                     agentDescription = it.agentDescription,
                     effectiveConfig = it.effectiveConfig,
                     communicationStatus = it.communicationStatus,
@@ -41,6 +42,7 @@ class AgentMongoAdapter(
             .map {
                 Agent(
                     instanceUid = Ulid.from(it.instanceUid),
+                    capabilities = it.capabilities,
                     agentDescription = it.agentDescription,
                     effectiveConfig = it.effectiveConfig,
                     communicationStatus = it.communicationStatus,
@@ -54,6 +56,7 @@ class AgentMongoAdapter(
         val agentDocument =
             AgentDocument(
                 instanceUid = agent.instanceUid.toUuid(),
+                capabilities = agent.capabilities,
                 agentDescription = agent.agentDescription,
                 effectiveConfig = agent.effectiveConfig,
                 communicationStatus = agent.communicationStatus,
@@ -68,6 +71,7 @@ class AgentMongoAdapter(
             .map {
                 Agent(
                     instanceUid = Ulid.from(it.instanceUid),
+                    capabilities = it.capabilities,
                     agentDescription = it.agentDescription,
                     effectiveConfig = it.effectiveConfig,
                     communicationStatus = it.communicationStatus,
@@ -77,4 +81,9 @@ class AgentMongoAdapter(
                 )
             }.awaitSingle()
     }
+
+    override suspend fun countAgents(): Long =
+        reactiveMongoOperations
+            .count(Query(), AgentDocument::class.java)
+            .awaitSingle()
 }

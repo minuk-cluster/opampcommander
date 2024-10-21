@@ -7,6 +7,8 @@ import dev.minuk.opampcommander.application.services.mapper.toProto
 import dev.minuk.opampcommander.application.usecases.FetchServerToAgentUsecase
 import dev.minuk.opampcommander.application.usecases.HandleAgentToServerUsecase
 import dev.minuk.opampcommander.domain.models.agent.Agent
+import dev.minuk.opampcommander.domain.models.agent.AgentCapabilities
+import dev.minuk.opampcommander.domain.models.agent.CommunicationStatus
 import dev.minuk.opampcommander.domain.models.command.CommandKind
 import dev.minuk.opampcommander.domain.models.command.RawCommand
 import dev.minuk.opampcommander.domain.models.command.ServerToAgent
@@ -37,6 +39,7 @@ class OpampService(
         val agent = getAgentInternalUsecase.getAgent(instanceUid = instanceUid) ?: Agent(instanceUid = instanceUid)
         val updatedAgent =
             agent.report(
+                reportedCapabilities = agentToServer.capabilities.toDomain(),
                 reportedAgentDescription =
                     if (agentToServer.hasAgentDescription()) {
                         agentToServer.agentDescription.toDomain()
@@ -61,6 +64,9 @@ class OpampService(
                     } else {
                         null
                     },
+                reportedCommunicationStatus = CommunicationStatus(
+                    sequenceNum = agentToServer.sequenceNum,
+                ),
                 reportedCustomCapabilities =
                     if (agentToServer.hasCustomCapabilities()) {
                         agentToServer.customCapabilities.toDomain()
@@ -100,3 +106,4 @@ class OpampService(
         return serverToAgent.toProto()
     }
 }
+

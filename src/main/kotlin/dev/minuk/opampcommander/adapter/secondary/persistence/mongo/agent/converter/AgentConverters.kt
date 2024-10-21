@@ -2,6 +2,7 @@ package dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.conve
 
 import dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.config.MongodbReadingConverter
 import dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.config.MongodbWritingConverter
+import dev.minuk.opampcommander.domain.models.agent.AgentCapabilities
 import dev.minuk.opampcommander.domain.models.agent.AgentConfigFile
 import dev.minuk.opampcommander.domain.models.agent.AgentConfigMap
 import dev.minuk.opampcommander.domain.models.agent.AgentDescription
@@ -12,12 +13,36 @@ import dev.minuk.opampcommander.domain.models.agent.EffectiveConfig
 import dev.minuk.opampcommander.domain.models.agent.PackageStatus
 import dev.minuk.opampcommander.domain.models.agent.PackageStatuses
 import org.bson.Document
+import org.bson.types.Binary
 import org.springframework.core.convert.converter.Converter
 import java.time.Instant
 import java.util.Date
 
 enum class SchemaVersion {
     V1,
+}
+
+@MongodbReadingConverter
+class AgentCapabilitiesReadConverter : Converter<Document, AgentCapabilities> {
+    val supportSchemaVersion: Set<SchemaVersion> = setOf(SchemaVersion.V1)
+
+    override fun convert(source: Document): AgentCapabilities {
+        if (SchemaVersion.valueOf(source.getString("schemaVersion")) !in supportSchemaVersion) {
+            throw IllegalArgumentException("Unsupported schema version")
+        }
+
+        return AgentCapabilities.of(source.getLong("capabilities"))
+    }
+}
+
+@MongodbWritingConverter
+class AgentCapabilitiesWriteConverter : Converter<AgentCapabilities, Document> {
+    val schemaVersion: SchemaVersion = SchemaVersion.V1
+
+    override fun convert(source: AgentCapabilities): Document =
+        Document()
+            .append("schemaVersion", schemaVersion.toString())
+            .append("capabilities", source.toLong())
 }
 
 @MongodbReadingConverter
@@ -89,7 +114,7 @@ class EffectiveConfigReadConverter : Converter<Document, EffectiveConfig> {
                 }
 
                 return AgentConfigFile(
-                    body = source.get("body", ByteArray::class.java),
+                    body = source.get("body", Binary::class.java).data,
                     contentType = source.getString("contentType"),
                 )
             }
@@ -148,7 +173,7 @@ class CommunicationStatusReadConverter : Converter<Document, CommunicationStatus
         }
 
         return CommunicationStatus(
-            sequenceNum = source.getInteger("sequenceNum"),
+            sequenceNum = source.getLong("sequenceNum"),
         )
     }
 }
@@ -179,7 +204,7 @@ class PackageStatuesReadConverter : Converter<Document, PackageStatuses> {
                 (source.get("packages", Map::class.java) as Map<String, Document>).mapValues {
                     packageStatusReadConverter.convert(it.value)
                 },
-            serverProvidedAllPackagesHash = source.getString("serverProvidedAllPackagesHash"),
+            serverProvidedAllPackagesHash = source.get("serverProvidedAllPackagesHash", Binary::class.java).data,
             errorMessage = source.getString("errorMessage"),
         )
     }
