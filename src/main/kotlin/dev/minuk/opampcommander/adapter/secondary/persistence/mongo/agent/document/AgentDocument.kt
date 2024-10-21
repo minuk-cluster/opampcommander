@@ -18,11 +18,11 @@ data class AgentDocument(
     var id: String? = null,
     @Indexed(unique = true)
     val instanceUid: UUID,
-    val capabilities: AgentCapabilities,
-    val agentDescription: AgentDescription,
-    val effectiveConfig: EffectiveConfig,
-    val communicationStatus: CommunicationStatus,
-    val packageStatuses: PackageStatuses,
-    val componentHealth: ComponentHealth,
-    val customCapabilities: CustomCapabilities,
+    val capabilities: AgentCapabilities?,
+    val agentDescription: AgentDescription?,
+    val effectiveConfig: EffectiveConfig?,
+    val communicationStatus: CommunicationStatus?,
+    val packageStatuses: PackageStatuses?,
+    val componentHealth: ComponentHealth?,
+    val customCapabilities: CustomCapabilities?,
 )

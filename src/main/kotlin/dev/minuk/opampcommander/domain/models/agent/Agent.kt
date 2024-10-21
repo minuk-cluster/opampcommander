@@ -55,23 +55,23 @@ data class AgentCapabilities(
 
 data class Agent(
     val instanceUid: Ulid,
-    val capabilities: AgentCapabilities,
-    val agentDescription: AgentDescription,
-    val effectiveConfig: EffectiveConfig,
-    val packageStatuses: PackageStatuses,
-    val componentHealth: ComponentHealth,
-    val customCapabilities: CustomCapabilities,
-    val communicationStatus: CommunicationStatus,
+    val capabilities: AgentCapabilities?,
+    val agentDescription: AgentDescription?,
+    val effectiveConfig: EffectiveConfig?,
+    val packageStatuses: PackageStatuses?,
+    val componentHealth: ComponentHealth?,
+    val customCapabilities: CustomCapabilities?,
+    val communicationStatus: CommunicationStatus?,
 ) {
     constructor(instanceUid: Ulid) : this(
         instanceUid = instanceUid,
-        capabilities = AgentCapabilities.empty(),
-        agentDescription = AgentDescription.empty(),
-        effectiveConfig = EffectiveConfig.empty(),
-        communicationStatus = CommunicationStatus.empty(),
-        packageStatuses = PackageStatuses.empty(),
-        componentHealth = ComponentHealth.empty(),
-        customCapabilities = CustomCapabilities.empty(),
+        capabilities = null,
+        agentDescription = null,
+        effectiveConfig = null,
+        communicationStatus = null,
+        packageStatuses = null,
+        componentHealth = null,
+        customCapabilities = null,
     )
 
     fun report(
@@ -94,12 +94,12 @@ data class Agent(
             customCapabilities = reportedCustomCapabilities ?: this.customCapabilities,
         )
 
-    val os: Os
-        get() = agentDescription.os
-    val service: Service
-        get() = agentDescription.service
-    val host: Host
-        get() = agentDescription.host
+    val os: Os?
+        get() = agentDescription?.os
+    val service: Service?
+        get() = agentDescription?.service
+    val host: Host?
+        get() = agentDescription?.host
 
     fun applyRemoteConfig(newRemoteConfig: AgentRemoteConfig) {
         TODO("Not yet implemented")

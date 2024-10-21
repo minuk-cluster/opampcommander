@@ -67,13 +67,13 @@ class AdaminAgentController(
     private fun Agent.toAdminResponse(): AgentForAdminResponse {
         return AgentForAdminResponse(
             instanceUid = instanceUid.toString(),
-            capabilities = capabilities.toAdminResponse(),
-            agentDescription = agentDescription.toAdminResponse(),
-            effectiveConfig = effectiveConfig.toAdminResponse(),
-            packageStatuses = packageStatuses.toAdminResponse(),
-            componentHealth = componentHealth.toAdminResponse(),
-            customCapabilities = customCapabilities.toAdminResponse(),
-            communicationStatus = communicationStatus.toAdminResponse(),
+            capabilities = capabilities?.toAdminResponse(),
+            agentDescription = agentDescription?.toAdminResponse(),
+            effectiveConfig = effectiveConfig?.toAdminResponse(),
+            packageStatuses = packageStatuses?.toAdminResponse(),
+            componentHealth = componentHealth?.toAdminResponse(),
+            customCapabilities = customCapabilities?.toAdminResponse(),
+            communicationStatus = communicationStatus?.toAdminResponse(),
         )
     }
 
@@ -158,13 +158,13 @@ private fun AgentConfigFile.toAgentResponse(): EffectiveConfigForAdminResponse.A
 
 data class AgentForAdminResponse(
     val instanceUid: String,
-    val capabilities: AgentCapabilitiesForAdminResponse,
-    val agentDescription: AgentDescriptionForAdminResponse,
-    val effectiveConfig: EffectiveConfigForAdminResponse,
-    val packageStatuses: PackageStatusesForAdminResponse,
-    val componentHealth: ComponentHealthForAdminResponse,
-    val customCapabilities: CustomCapabilitiesForAdminResponse,
-    val communicationStatus: CommunicationStatusForAdminResponse,
+    val capabilities: AgentCapabilitiesForAdminResponse?,
+    val agentDescription: AgentDescriptionForAdminResponse?,
+    val effectiveConfig: EffectiveConfigForAdminResponse?,
+    val packageStatuses: PackageStatusesForAdminResponse?,
+    val componentHealth: ComponentHealthForAdminResponse?,
+    val customCapabilities: CustomCapabilitiesForAdminResponse?,
+    val communicationStatus: CommunicationStatusForAdminResponse?,
 )
 
 data class AgentCapabilitiesForAdminResponse(
