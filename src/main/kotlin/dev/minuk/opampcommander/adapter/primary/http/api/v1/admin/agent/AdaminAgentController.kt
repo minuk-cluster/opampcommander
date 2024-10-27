@@ -65,8 +65,8 @@ class AdaminAgentController(
         )
     }
 
-    private fun Agent.toAdminResponse(): AgentForAdminResponse {
-        return AgentForAdminResponse(
+    private fun Agent.toAdminResponse(): AgentForAdminResponse =
+        AgentForAdminResponse(
             instanceUid = instanceUid.toUuid(),
             capabilities = capabilities?.toAdminResponse(),
             agentDescription = agentDescription?.toAdminResponse(),
@@ -76,86 +76,83 @@ class AdaminAgentController(
             customCapabilities = customCapabilities?.toAdminResponse(),
             communicationStatus = communicationStatus?.toAdminResponse(),
         )
-    }
 
-    private fun AgentDescription.toAdminResponse(): AgentDescriptionForAdminResponse {
-        return AgentDescriptionForAdminResponse(
+    private fun AgentDescription.toAdminResponse(): AgentDescriptionForAdminResponse =
+        AgentDescriptionForAdminResponse(
             identifyingAttributes = identifyingAttributes,
             nonIdentifyingAttributes = nonIdentifyingAttributes,
         )
-    }
 
-    private fun EffectiveConfig.toAdminResponse(): EffectiveConfigForAdminResponse {
-        return EffectiveConfigForAdminResponse(
-            configMap = EffectiveConfigForAdminResponse.AgentConfigMapForAdminResponse(
-                configMap = configMap.configMap.mapValues {
-                    it.value.toAgentResponse()
-                }
-            )
+    private fun EffectiveConfig.toAdminResponse(): EffectiveConfigForAdminResponse =
+        EffectiveConfigForAdminResponse(
+            configMap =
+                EffectiveConfigForAdminResponse.AgentConfigMapForAdminResponse(
+                    configMap =
+                        configMap.configMap.mapValues {
+                            it.value.toAgentResponse()
+                        },
+                ),
         )
-    }
 
-    private fun PackageStatuses.toAdminResponse(): PackageStatusesForAdminResponse {
-        return PackageStatusesForAdminResponse(
-            packages = packages.mapValues {
-                PackageStatusesForAdminResponse.PackageStatusForAgentResponse(
-                    name = it.value.name,
-                    agentHasVersion = it.value.agentHasVersion,
-                    agentHasHash = it.value.agentHasHash,
-                    serverOfferedVersion = it.value.serverOfferedVersion,
-                    serverOfferedHash = it.value.serverOfferedHash,
-                    status = it.value.status.toString(),
-                    errorMessage = it.value.errorMessage,
-                )
-            }
+    private fun PackageStatuses.toAdminResponse(): PackageStatusesForAdminResponse =
+        PackageStatusesForAdminResponse(
+            packages =
+                packages.mapValues {
+                    PackageStatusesForAdminResponse.PackageStatusForAgentResponse(
+                        name = it.value.name,
+                        agentHasVersion = it.value.agentHasVersion,
+                        agentHasHash = it.value.agentHasHash,
+                        serverOfferedVersion = it.value.serverOfferedVersion,
+                        serverOfferedHash = it.value.serverOfferedHash,
+                        status = it.value.status.toString(),
+                        errorMessage = it.value.errorMessage,
+                    )
+                },
         )
-    }
 
-    private fun ComponentHealth.toAdminResponse(): ComponentHealthForAdminResponse {
-        return ComponentHealthForAdminResponse(
+    private fun ComponentHealth.toAdminResponse(): ComponentHealthForAdminResponse =
+        ComponentHealthForAdminResponse(
             healthy = healthy,
             startedAt = startedAt.toString(),
             lastError = lastError,
             status = status,
             statusObservedAt = statusObservedAt.toString(),
-            componentHealthMap = componentHealthMap.mapValues {
-                it.value.toAdminResponse()
-            }
+            componentHealthMap =
+                componentHealthMap.mapValues {
+                    it.value.toAdminResponse()
+                },
         )
-    }
 
-    private fun CustomCapabilities.toAdminResponse(): CustomCapabilitiesForAdminResponse {
-        return CustomCapabilitiesForAdminResponse(
+    private fun CustomCapabilities.toAdminResponse(): CustomCapabilitiesForAdminResponse =
+        CustomCapabilitiesForAdminResponse(
             capabilities = capabilities,
         )
-    }
 
-    private fun CommunicationStatus.toAdminResponse(): CommunicationStatusForAdminResponse {
-        return CommunicationStatusForAdminResponse(
+    private fun CommunicationStatus.toAdminResponse(): CommunicationStatusForAdminResponse =
+        CommunicationStatusForAdminResponse(
             sequenceNum = sequenceNum,
         )
-    }
-    private fun AgentCapabilities.toAdminResponse(): AgentCapabilitiesForAdminResponse {
-        return AgentCapabilitiesForAdminResponse(
+
+    private fun AgentCapabilities.toAdminResponse(): AgentCapabilitiesForAdminResponse =
+        AgentCapabilitiesForAdminResponse(
             capabilities = capabilities.map { it.toString() },
         )
-    }
 }
 
 @OptIn(ExperimentalStdlibApi::class)
-private fun AgentConfigFile.toAgentResponse(): EffectiveConfigForAdminResponse.AgentConfigFileForAdminResponse {
-    return when (contentType) {
-        "", "text/plain", "text/yaml" -> EffectiveConfigForAdminResponse.AgentConfigFileForAdminResponse(
-            body = String(body),
-            contentType = contentType,
-        )
-        else -> EffectiveConfigForAdminResponse.AgentConfigFileForAdminResponse(
-            body = body.toHexString(),
-            contentType = contentType,
-        )
+private fun AgentConfigFile.toAgentResponse(): EffectiveConfigForAdminResponse.AgentConfigFileForAdminResponse =
+    when (contentType) {
+        "", "text/plain", "text/yaml" ->
+            EffectiveConfigForAdminResponse.AgentConfigFileForAdminResponse(
+                body = String(body),
+                contentType = contentType,
+            )
+        else ->
+            EffectiveConfigForAdminResponse.AgentConfigFileForAdminResponse(
+                body = body.toHexString(),
+                contentType = contentType,
+            )
     }
-}
-
 
 data class AgentForAdminResponse(
     val instanceUid: UUID,
@@ -183,11 +180,11 @@ data class EffectiveConfigForAdminResponse(
     data class AgentConfigMapForAdminResponse(
         val configMap: Map<String, AgentConfigFileForAdminResponse>,
     )
+
     data class AgentConfigFileForAdminResponse(
         val body: String,
         val contentType: String,
     )
-
 }
 
 data class PackageStatusesForAdminResponse(

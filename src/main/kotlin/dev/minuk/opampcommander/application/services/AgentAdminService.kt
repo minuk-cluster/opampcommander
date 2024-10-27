@@ -20,29 +20,20 @@ class AgentAdminService(
     /**
      * Get an agent by instanceUid.
      */
-    override suspend fun getAgentByInstanceUid(instanceUid: Ulid): Agent? {
-        return getAgentInternalUsecase.getAgent(instanceUid)
-    }
+    override suspend fun getAgentByInstanceUid(instanceUid: Ulid): Agent? = getAgentInternalUsecase.getAgent(instanceUid)
 
     /**
      * Get an agent by instanceUid.
      */
-    override suspend fun getAgentByInstanceUid(instanceUid: UUID): Agent? {
-        return getAgentInternalUsecase.getAgent(Ulid.from(instanceUid))
-    }
+    override suspend fun getAgentByInstanceUid(instanceUid: UUID): Agent? = getAgentInternalUsecase.getAgent(Ulid.from(instanceUid))
 
     /**
      * Get agents.
      */
-    override suspend fun getAgents(request: GetAgentsRequest): Flow<Agent> {
-        return getAgentsInternalUsecase.getAgents(request = request)
-    }
+    override suspend fun getAgents(request: GetAgentsRequest): Flow<Agent> = getAgentsInternalUsecase.getAgents(request = request)
 
     /**
      * Get total number of agents
      */
-    override suspend fun getTotalAgents(): Long {
-        return countAgentsInternalUsecase.getTotalAgents()
-    }
+    override suspend fun getTotalAgents(): Long = countAgentsInternalUsecase.getTotalAgents()
 }
-

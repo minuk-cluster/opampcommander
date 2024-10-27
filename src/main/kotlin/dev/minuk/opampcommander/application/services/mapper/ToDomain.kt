@@ -36,9 +36,7 @@ fun Opamp.AgentDescription.toDomain(): AgentDescription =
             },
     )
 
-fun Long.toDomain(): AgentCapabilities {
-    return AgentCapabilities.of(this)
-}
+fun Long.toDomain(): AgentCapabilities = AgentCapabilities.of(this)
 
 fun Opamp.EffectiveConfig.toDomain(): EffectiveConfig =
     EffectiveConfig(

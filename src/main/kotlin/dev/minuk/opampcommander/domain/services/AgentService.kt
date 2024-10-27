@@ -18,18 +18,11 @@ class AgentService(
     GetAgentsInternalUsecase,
     CountAgentsInternalUsecase,
     UpsertAgentInternalUsecase {
+    override suspend fun getAgent(instanceUid: Ulid): Agent? = agentOperationsPort.getAgentByInstanceUid(instanceUid)
 
-    override suspend fun getAgent(instanceUid: Ulid): Agent? {
-        return agentOperationsPort.getAgentByInstanceUid(instanceUid)
-    }
+    override suspend fun upsertAgent(agent: Agent): Agent = agentOperationsPort.saveAgent(agent)
 
-    override suspend fun upsertAgent(agent: Agent): Agent {
-        return agentOperationsPort.saveAgent(agent)
-    }
-
-    override suspend fun getTotalAgents(): Long {
-        return agentOperationsPort.countAgents()
-    }
+    override suspend fun getTotalAgents(): Long = agentOperationsPort.countAgents()
 
     override suspend fun getAgents(request: GetAgentsRequest): Flow<Agent> {
         // TODO: Implement request by sort.

@@ -22,8 +22,7 @@ data class AgentCapabilities(
             )
     }
 
-    fun toLong(): Long =
-        capabilities.fold(0L) { acc, capability -> acc or capability.value }
+    fun toLong(): Long = capabilities.fold(0L) { acc, capability -> acc or capability.value }
 
     val hasReportsStatus: Boolean
         get() = capabilities.contains(Capability.ReportsStatus)
@@ -44,7 +43,7 @@ data class AgentCapabilities(
         AcceptsOtherConnectionSettings(0x00000200),
         AcceptsRestartCommand(0x00000400),
         ReportsHealth(0x00000800),
-        ReportsRemoteConfig(0x00001000)
+        ReportsRemoteConfig(0x00001000),
         ;
 
         companion object {

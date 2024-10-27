@@ -3,7 +3,6 @@ package dev.minuk.opampcommander.integration
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.minuk.opampcommander.adapter.primary.http.api.v1.admin.agent.MultipleAgentResponse
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -31,6 +30,7 @@ class OpampCollectorOPAMPIntegrationTest(
             registry.add("spring.data.mongodb.uri") { mongoDbContainer.replicaSetUrl }
         }
     }
+
     @LocalServerPort
     private var localPort: Int? = null
 
@@ -75,10 +75,12 @@ class OpampCollectorOPAMPIntegrationTest(
 
         var success = false
         for (i in 1..10) {
-            webClient.get()
+            webClient
+                .get()
                 .uri("/api/v1/admin/agent")
                 .exchange()
-                .expectStatus().isOk
+                .expectStatus()
+                .isOk
                 .expectBody()
                 .consumeWith { response ->
                     val response = jacksonObjectMapper().readValue(response.responseBody, MultipleAgentResponse::class.java)
@@ -138,10 +140,12 @@ class OpampCollectorOPAMPIntegrationTest(
         otelCollectorContainer.start()
         var success = false
         for (i in 1..10) {
-            webClient.get()
+            webClient
+                .get()
                 .uri("/api/v1/admin/agent")
                 .exchange()
-                .expectStatus().isOk
+                .expectStatus()
+                .isOk
                 .expectBody()
                 .consumeWith { response ->
                     val response = jacksonObjectMapper().readValue(response.responseBody, MultipleAgentResponse::class.java)
