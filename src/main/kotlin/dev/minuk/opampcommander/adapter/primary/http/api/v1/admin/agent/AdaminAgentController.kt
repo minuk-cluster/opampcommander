@@ -28,7 +28,7 @@ class AdaminAgentController(
 ) {
     @GetMapping("/{instanceUid}")
     suspend fun getAgentByInstanceUid(
-        @PathVariable instanceUid: String,
+        @PathVariable instanceUid: UUID,
     ): ResponseEntity<AgentForAdminResponse> {
         val agent = adminAgentUsecase.getAgentByInstanceUid(instanceUid)
         return ResponseEntity.ofNullable(agent?.toAdminResponse())
