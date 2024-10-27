@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/v1/admin/agent")
@@ -66,7 +67,7 @@ class AdaminAgentController(
 
     private fun Agent.toAdminResponse(): AgentForAdminResponse {
         return AgentForAdminResponse(
-            instanceUid = instanceUid.toString(),
+            instanceUid = instanceUid.toUuid(),
             capabilities = capabilities?.toAdminResponse(),
             agentDescription = agentDescription?.toAdminResponse(),
             effectiveConfig = effectiveConfig?.toAdminResponse(),
@@ -157,7 +158,7 @@ private fun AgentConfigFile.toAgentResponse(): EffectiveConfigForAdminResponse.A
 
 
 data class AgentForAdminResponse(
-    val instanceUid: String,
+    val instanceUid: UUID,
     val capabilities: AgentCapabilitiesForAdminResponse?,
     val agentDescription: AgentDescriptionForAdminResponse?,
     val effectiveConfig: EffectiveConfigForAdminResponse?,
