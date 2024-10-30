@@ -54,7 +54,7 @@ class OpampCollectorOPAMPIntegrationTest(
               opamp:
                 server:
                   http:
-                    endpoint: "http://host.docker.internal:$localPort/v1/opamp"
+                    endpoint: "http://host.testcontainers.internal:$localPort/v1/opamp"
             receivers:
               nop:
             processors:
@@ -76,6 +76,7 @@ class OpampCollectorOPAMPIntegrationTest(
                 
             """.trimIndent()
 
+        org.testcontainers.Testcontainers.exposeHostPorts(localPort!!);
         val otelCollectorContainer =
             GenericContainer(otelCollectorContainerImage)
                 .withCopyToContainer(
@@ -118,7 +119,7 @@ class OpampCollectorOPAMPIntegrationTest(
               opamp:
                 server:
                   ws:
-                    endpoint: "ws://host.docker.internal:$localPort/ws/v1/opamp"
+                    endpoint: "ws://host.testcontainers.internal:$localPort/ws/v1/opamp"
                     tls:
                       insecure: true
             receivers:
@@ -142,6 +143,7 @@ class OpampCollectorOPAMPIntegrationTest(
                 
             """.trimIndent()
 
+        org.testcontainers.Testcontainers.exposeHostPorts(localPort!!);
         val otelCollectorContainer =
             GenericContainer(otelCollectorContainerImage)
                 .withCopyToContainer(

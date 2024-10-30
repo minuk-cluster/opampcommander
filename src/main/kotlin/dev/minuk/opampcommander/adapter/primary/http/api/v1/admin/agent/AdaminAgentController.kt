@@ -12,6 +12,7 @@ import dev.minuk.opampcommander.domain.models.agent.CustomCapabilities
 import dev.minuk.opampcommander.domain.models.agent.EffectiveConfig
 import dev.minuk.opampcommander.domain.models.agent.PackageStatuses
 import dev.minuk.opampcommander.domain.port.primary.agent.GetAgentsRequest
+import dev.minuk.opampcommander.util.Logger
 import kotlinx.coroutines.flow.toList
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,10 +27,15 @@ import java.util.UUID
 class AdaminAgentController(
     val adminAgentUsecase: AdminAgentUsecase,
 ) {
+    companion object {
+        private val log by Logger()
+    }
+
     @GetMapping("/{instanceUid}")
     suspend fun getAgentByInstanceUid(
         @PathVariable instanceUid: UUID,
     ): ResponseEntity<AgentForAdminResponse> {
+        log.info("/api/v1/admin/agent/$instanceUid called")
         val agent = adminAgentUsecase.getAgentByInstanceUid(instanceUid)
         return ResponseEntity.ofNullable(agent?.toAdminResponse())
     }
