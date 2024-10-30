@@ -1,0 +1,71 @@
+{
+  "_id": {
+    "$oid": "671516931c652d43de925e3e"
+  },
+  "instanceUid": {
+    "$binary": {
+      "base64": "NqUy+3T+TzGO718RfeUu6w==",
+      "subType": "04"
+    }
+  },
+  "capabilities": {
+    "schemaVersion": "V1",
+    "capabilities": {
+      "$numberLong": "5"
+    }
+  },
+  "agentDescription": {
+    "schemaVersion": "V1",
+    "identifyingAttributes": {
+      "service.instance.id": "36a532fb-74fe-4f31-8eef-5f117de52eeb",
+      "service.name": "otelcol-contrib",
+      "service.version": "0.110.0"
+    },
+    "nonIdentifyingAttributes": {
+      "host.arch": "arm64",
+      "host.name": "3ae9cdef0a73",
+      "os.type": "linux"
+    }
+  },
+  "effectiveConfig": {
+    "schemaVersion": "V1",
+    "configMap": {
+      "schemaVersion": "V1",
+      "configMap": {}
+    }
+  },
+  "communicationStatus": {
+    "schemaVersion": "V1",
+    "sequenceNum": {
+      "$numberLong": "7"
+    }
+  },
+  "packageStatuses": {
+    "schemaVersion": "V1",
+    "packages": {},
+    "serverProvidedAllPackagesHash": {
+      "$binary": {
+        "base64": "",
+        "subType": "00"
+      }
+    },
+    "errorMessage": ""
+  },
+  "componentHealth": {
+    "schemaVersion": "V1",
+    "healthy": false,
+    "startedAt": {
+      "$date": "2024-10-20T14:41:23.123Z"
+    },
+    "lastError": "",
+    "status": "",
+    "statusObservedAt": {
+      "$date": "2024-10-20T14:41:23.123Z"
+    },
+    "componentHealthMap": {}
+  },
+  "customCapabilities": {
+    "schemaVersion": "V1",
+    "capabilities": []
+  }
+}

@@ -83,6 +83,7 @@ dependencies {
 	testImplementation("io.mockk:mockk:1.13.12")
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("io.kotest:kotest-assertions-core:5.7.2")
 }
 
 dependencyManagement {

@@ -7,7 +7,6 @@ import dev.minuk.opampcommander.application.services.mapper.toProto
 import dev.minuk.opampcommander.application.usecases.FetchServerToAgentUsecase
 import dev.minuk.opampcommander.application.usecases.HandleAgentToServerUsecase
 import dev.minuk.opampcommander.domain.models.agent.Agent
-import dev.minuk.opampcommander.domain.models.agent.AgentCapabilities
 import dev.minuk.opampcommander.domain.models.agent.CommunicationStatus
 import dev.minuk.opampcommander.domain.models.command.CommandKind
 import dev.minuk.opampcommander.domain.models.command.RawCommand
@@ -64,9 +63,10 @@ class OpampService(
                     } else {
                         null
                     },
-                reportedCommunicationStatus = CommunicationStatus(
-                    sequenceNum = agentToServer.sequenceNum,
-                ),
+                reportedCommunicationStatus =
+                    CommunicationStatus(
+                        sequenceNum = agentToServer.sequenceNum,
+                    ),
                 reportedCustomCapabilities =
                     if (agentToServer.hasCustomCapabilities()) {
                         agentToServer.customCapabilities.toDomain()
@@ -106,4 +106,3 @@ class OpampService(
         return serverToAgent.toProto()
     }
 }
-

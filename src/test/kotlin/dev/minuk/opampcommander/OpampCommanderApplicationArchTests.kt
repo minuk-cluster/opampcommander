@@ -1,13 +1,17 @@
 package dev.minuk.opampcommander
 
 import com.tngtech.archunit.core.importer.ClassFileImporter
+import com.tngtech.archunit.core.importer.ImportOption
 import com.tngtech.archunit.library.Architectures.onionArchitecture
 import org.junit.jupiter.api.Test
 
 class OpampCommanderApplicationArchTests {
     @Test
     fun `opampcommander follows onion architecture`() {
-        val classes = ClassFileImporter().importPackages("dev.minuk.opampcommander")
+        val classes =
+            ClassFileImporter()
+                .withImportOption(ImportOption.DoNotIncludeTests())
+                .importPackages("dev.minuk.opampcommander")
         val rule =
             onionArchitecture()
                 .domainModels("dev.minuk.opampcommander.domain.models..")

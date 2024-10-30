@@ -1,0 +1,140 @@
+{
+  "agents": [
+    {
+      "instanceUid": "36a532fb-74fe-4f31-8eef-5f117de52eeb",
+      "capabilities": {
+        "capabilities": [
+          "ReportsStatus",
+          "ReportsEffectiveConfig"
+        ]
+      },
+      "agentDescription": {
+        "identifyingAttributes": {
+          "service.instance.id": "36a532fb-74fe-4f31-8eef-5f117de52eeb",
+          "service.name": "otelcol-contrib",
+          "service.version": "0.110.0"
+        },
+        "nonIdentifyingAttributes": {
+          "host.arch": "arm64",
+          "host.name": "3ae9cdef0a73",
+          "os.type": "linux"
+        }
+      },
+      "effectiveConfig": {
+        "configMap": {
+          "configMap": {
+            "": {
+              "body": "connectors: {}\nexporters:\n    nop: {}\nextensions:\n    health_check:\n        auth: null\n        check_collector_pipeline:\n            enabled: false\n            exporter_failure_threshold: 5\n            interval: 5m\n        compression_algorithms: []\n        cors: null\n        endpoint: localhost:13133\n        idle_timeout: 0s\n        include_metadata: false\n        max_request_body_size: 0\n        path: /\n        read_header_timeout: 0s\n        read_timeout: 0s\n        response_body: null\n        response_headers: {}\n        tls: null\n        write_timeout: 0s\n    opamp:\n        agent_description:\n            non_identifying_attributes: {}\n        capabilities:\n            reports_effective_config: true\n        instance_uid: \"\"\n        ppid: 0\n        ppid_poll_interval: 5s\n        server:\n            http:\n                polling_interval: 0s\nprocessors:\n    batch:\n        metadata_cardinality_limit: 1000\n        metadata_keys: []\n        send_batch_max_size: 0\n        send_batch_size: 8192\n        timeout: 200ms\nreceivers:\n    nop: {}\nservice:\n    extensions:\n        - opamp\n    pipelines:\n        metrics:\n            exporters:\n                - nop\n            processors:\n                - batch\n            receivers:\n                - nop\n    telemetry:\n        logs:\n            development: false\n            disable_caller: false\n            disable_stacktrace: false\n            encoding: console\n            error_output_paths:\n                - stderr\n            initial_fields: {}\n            level: debug\n            output_paths:\n                - stderr\n            sampling:\n                enabled: true\n                initial: 10\n                thereafter: 100\n                tick: 10s\n        metrics:\n            address: :8888\n            level: Detailed\n            readers: []\n        resource: {}\n        traces:\n            level: Basic\n            processors: []\n            propagators: []\n",
+              "contentType": ""
+            }
+          }
+        }
+      },
+      "packageStatuses": {
+        "packages": {}
+      },
+      "componentHealth": {
+        "healthy": false,
+        "startedAt": "2024-10-20T14:41:23.123Z",
+        "lastError": "",
+        "status": "",
+        "statusObservedAt": "2024-10-20T14:41:23.123Z",
+        "componentHealthMap": {}
+      },
+      "customCapabilities": {
+        "capabilities": []
+      },
+      "communicationStatus": {
+        "sequenceNum": 7
+      }
+    },
+    {
+      "instanceUid": "ec1d5818-8c1e-424e-a604-a6c4e037cb8e",
+      "capabilities": {
+        "capabilities": [
+          "ReportsStatus",
+          "ReportsEffectiveConfig"
+        ]
+      },
+      "agentDescription": {
+        "identifyingAttributes": {
+          "service.instance.id": "ec1d5818-8c1e-424e-a604-a6c4e037cb8e",
+          "service.name": "otelcol-contrib",
+          "service.version": "0.110.0"
+        },
+        "nonIdentifyingAttributes": {
+          "host.arch": "arm64",
+          "host.name": "3ae9cdef0a73",
+          "os.type": "linux"
+        }
+      },
+      "effectiveConfig": {
+        "configMap": {
+          "configMap": {
+            "": {
+              "body": "connectors: {}\nexporters:\n    nop: {}\nextensions:\n    health_check:\n        auth: null\n        check_collector_pipeline:\n            enabled: false\n            exporter_failure_threshold: 5\n            interval: 5m\n        compression_algorithms: []\n        cors: null\n        endpoint: localhost:13133\n        idle_timeout: 0s\n        include_metadata: false\n        max_request_body_size: 0\n        path: /\n        read_header_timeout: 0s\n        read_timeout: 0s\n        response_body: null\n        response_headers: {}\n        tls: null\n        write_timeout: 0s\n    opamp:\n        agent_description:\n            non_identifying_attributes: {}\n        capabilities:\n            reports_effective_config: true\n        instance_uid: \"\"\n        ppid: 0\n        ppid_poll_interval: 5s\n        server:\n            http:\n                polling_interval: 0s\nprocessors:\n    batch:\n        metadata_cardinality_limit: 1000\n        metadata_keys: []\n        send_batch_max_size: 0\n        send_batch_size: 8192\n        timeout: 200ms\nreceivers:\n    nop: {}\nservice:\n    extensions:\n        - opamp\n    pipelines:\n        metrics:\n            exporters:\n                - nop\n            processors:\n                - batch\n            receivers:\n                - nop\n    telemetry:\n        logs:\n            development: false\n            disable_caller: false\n            disable_stacktrace: false\n            encoding: console\n            error_output_paths:\n                - stderr\n            initial_fields: {}\n            level: debug\n            output_paths:\n                - stderr\n            sampling:\n                enabled: true\n                initial: 10\n                thereafter: 100\n                tick: 10s\n        metrics:\n            address: :8888\n            level: Detailed\n            readers: []\n        resource: {}\n        traces:\n            level: Basic\n            processors: []\n            propagators: []\n",
+              "contentType": ""
+            }
+          }
+        }
+      },
+      "packageStatuses": {
+        "packages": {}
+      },
+      "componentHealth": {
+        "healthy": false,
+        "startedAt": "2024-10-20T14:44:42.627Z",
+        "lastError": "",
+        "status": "",
+        "statusObservedAt": "2024-10-20T14:44:42.627Z",
+        "componentHealthMap": {}
+      },
+      "customCapabilities": {
+        "capabilities": []
+      },
+      "communicationStatus": {
+        "sequenceNum": 37
+      }
+    },
+    {
+      "instanceUid": "3bb4254d-ff49-4a2d-88f0-55c78a275b50",
+      "capabilities": {
+        "capabilities": [
+          "ReportsStatus",
+          "ReportsEffectiveConfig"
+        ]
+      },
+      "agentDescription": {
+        "identifyingAttributes": {
+          "service.instance.id": "3bb4254d-ff49-4a2d-88f0-55c78a275b50",
+          "service.name": "otelcol-contrib",
+          "service.version": "0.110.0"
+        },
+        "nonIdentifyingAttributes": {
+          "host.arch": "arm64",
+          "host.name": "3ae9cdef0a73",
+          "os.type": "linux"
+        }
+      },
+      "effectiveConfig": {
+        "configMap": {
+          "configMap": {
+            "": {
+              "body": "connectors: {}\nexporters:\n    nop: {}\nextensions:\n    health_check:\n        auth: null\n        check_collector_pipeline:\n            enabled: false\n            exporter_failure_threshold: 5\n            interval: 5m\n        compression_algorithms: []\n        cors: null\n        endpoint: localhost:13133\n        idle_timeout: 0s\n        include_metadata: false\n        max_request_body_size: 0\n        path: /\n        read_header_timeout: 0s\n        read_timeout: 0s\n        response_body: null\n        response_headers: {}\n        tls: null\n        write_timeout: 0s\n    opamp:\n        agent_description:\n            non_identifying_attributes: {}\n        capabilities:\n            reports_effective_config: true\n        instance_uid: \"\"\n        ppid: 0\n        ppid_poll_interval: 5s\n        server:\n            http:\n                polling_interval: 0s\nprocessors:\n    batch:\n        metadata_cardinality_limit: 1000\n        metadata_keys: []\n        send_batch_max_size: 0\n        send_batch_size: 8192\n        timeout: 200ms\nreceivers:\n    nop: {}\nservice:\n    extensions:\n        - opamp\n    pipelines:\n        metrics:\n            exporters:\n                - nop\n            processors:\n                - batch\n            receivers:\n                - nop\n    telemetry:\n        logs:\n            development: false\n            disable_caller: false\n            disable_stacktrace: false\n            encoding: console\n            error_output_paths:\n                - stderr\n            initial_fields: {}\n            level: debug\n            output_paths:\n                - stderr\n            sampling:\n                enabled: true\n                initial: 10\n                thereafter: 100\n                tick: 10s\n        metrics:\n            address: :8888\n            level: Detailed\n            readers: []\n        resource: {}\n        traces:\n            level: Basic\n            processors: []\n            propagators: []\n",
+              "contentType": ""
+            }
+          }
+        }
+      },
+      "packageStatuses": {
+        "packages": {}
+      },
+      "componentHealth": null,
+      "customCapabilities": null,
+      "communicationStatus": {
+        "sequenceNum": 5
+      }
+    }
+  ],
+  "totalCount": 3
+}

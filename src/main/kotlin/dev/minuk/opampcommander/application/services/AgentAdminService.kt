@@ -9,6 +9,7 @@ import dev.minuk.opampcommander.domain.port.primary.agent.GetAgentsInternalUseca
 import dev.minuk.opampcommander.domain.port.primary.agent.GetAgentsRequest
 import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class AgentAdminService(
@@ -19,24 +20,20 @@ class AgentAdminService(
     /**
      * Get an agent by instanceUid.
      */
-    override suspend fun getAgentByInstanceUid(instanceUid: String): Agent? {
-        @Suppress("NAME_SHADOWING")
-        val instanceUid = Ulid.from(instanceUid)
-        return getAgentInternalUsecase.getAgent(instanceUid)
-    }
+    override suspend fun getAgentByInstanceUid(instanceUid: Ulid): Agent? = getAgentInternalUsecase.getAgent(instanceUid)
+
+    /**
+     * Get an agent by instanceUid.
+     */
+    override suspend fun getAgentByInstanceUid(instanceUid: UUID): Agent? = getAgentInternalUsecase.getAgent(Ulid.from(instanceUid))
 
     /**
      * Get agents.
      */
-    override suspend fun getAgents(request: GetAgentsRequest): Flow<Agent> {
-        return getAgentsInternalUsecase.getAgents(request = request)
-    }
+    override suspend fun getAgents(request: GetAgentsRequest): Flow<Agent> = getAgentsInternalUsecase.getAgents(request = request)
 
     /**
      * Get total number of agents
      */
-    override suspend fun getTotalAgents(): Long {
-        return countAgentsInternalUsecase.getTotalAgents()
-    }
+    override suspend fun getTotalAgents(): Long = countAgentsInternalUsecase.getTotalAgents()
 }
-
