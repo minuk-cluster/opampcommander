@@ -7,13 +7,17 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.images.builder.Transferable
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.Duration
 
+@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class OpampCollectorOPAMPIntegrationTest(
     @Autowired
@@ -22,12 +26,19 @@ class OpampCollectorOPAMPIntegrationTest(
     companion object {
         val otelCollectorContainerImage = "otel/opentelemetry-collector-contrib:0.110.0"
 
+        @Container
+        @JvmStatic
+        val mongoDbContainer =
+            MongoDBContainer("mongo:latest")
+                .withReuse(true)
+                .withStartupTimeout(Duration.ofSeconds(30))
+
         @DynamicPropertySource
         @JvmStatic
-        fun configureProperties(registry: org.springframework.test.context.DynamicPropertyRegistry) {
-            val mongoDbContainer = MongoDBContainer("mongo:latest")
-            mongoDbContainer.start()
-            registry.add("spring.data.mongodb.uri") { mongoDbContainer.replicaSetUrl }
+        fun setProperties(registry: DynamicPropertyRegistry) {
+            registry.add("spring.data.mongodb.uri") {
+                mongoDbContainer.replicaSetUrl
+            }
         }
     }
 
@@ -82,8 +93,8 @@ class OpampCollectorOPAMPIntegrationTest(
                 .expectStatus()
                 .isOk
                 .expectBody()
-                .consumeWith { response ->
-                    val response = jacksonObjectMapper().readValue(response.responseBody, MultipleAgentResponse::class.java)
+                .consumeWith { resp ->
+                    val response = jacksonObjectMapper().readValue(resp.responseBody, MultipleAgentResponse::class.java)
                     if (response.totalCount == 1L) {
                         success = true
                     }
@@ -147,8 +158,8 @@ class OpampCollectorOPAMPIntegrationTest(
                 .expectStatus()
                 .isOk
                 .expectBody()
-                .consumeWith { response ->
-                    val response = jacksonObjectMapper().readValue(response.responseBody, MultipleAgentResponse::class.java)
+                .consumeWith { resp ->
+                    val response = jacksonObjectMapper().readValue(resp.responseBody, MultipleAgentResponse::class.java)
                     if (response.totalCount == 1L) {
                         success = true
                     }
