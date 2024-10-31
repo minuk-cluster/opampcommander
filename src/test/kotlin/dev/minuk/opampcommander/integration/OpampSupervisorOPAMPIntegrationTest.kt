@@ -12,17 +12,62 @@ import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.MongoDBContainer
+import org.testcontainers.images.builder.ImageFromDockerfile
 import org.testcontainers.images.builder.Transferable
+import org.testcontainers.images.builder.dockerfile.statement.MultiArgsStatement
+import org.testcontainers.images.builder.dockerfile.statement.SingleArgumentStatement
+import org.testcontainers.images.builder.dockerfile.statement.Statement
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import java.io.File
+import java.nio.file.Path
 import java.time.Duration
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class OpampCollectorOPAMPIntegrationTest(
+class OpampSupervisorOPAMPIntegrationTest(
     @Autowired
     private val webClient: WebTestClient,
 ) {
+    init {
+        val file = File.createTempFile("Dockerfile", "")
+        file.writeText(
+            """
+            FROM golang:1.23 as builder
+            WORKDIR /
+            RUN wget https://github.com/open-telemetry/opentelemetry-collector-contrib/archive/refs/tags/v0.112.0.tar.gz
+            RUN tar -zxvf v0.112.0.tar.gz
+            WORKDIR opentelemetry-collector-contrib-0.112.0/cmd/opampsupervisor
+            RUN CGO_ENABLED=0 go build
+            RUN echo '\
+            server:\n\
+              endpoint: wss://127.0.0.1:4320/v1/opamp\n\
+              tls:\n\
+                insecure_skip_verify: true\n\
+            capabilities:\n\
+              reports_effective_config: true\n\
+              reports_own_metrics: true\n\
+              reports_health: true\n\
+              accepts_remote_config: true\n\
+              reports_remote_config: true\n\
+            agent:\n\ 
+              executable: /otelcol-contrib\n\
+            storage:\n\ 
+              directory: . '\
+            >> /config.yaml
+
+            FROM otel/opentelemetry-collector-contrib:0.112.0
+            #FROM ubuntu:20.04
+            COPY --chmod=755 --from=builder /opentelemetry-collector-contrib-0.112.0/cmd/opampsupervisor/opampsupervisor /opampsupervisor
+            COPY --from=builder /config.yaml /etc/opampsupervisor/config.yaml
+            ENTRYPOINT ["/opampsupervisor"]
+            CMD ["--config", "/etc/opampsupervisor/config.yaml"]
+            """.trimIndent()
+        )
+        ImageFromDockerfile()
+            .withDockerfile(Path.of(file.absolutePath))
+    }
+
     companion object {
         val otelCollectorContainerImage = "otel/opentelemetry-collector-contrib:0.110.0"
 
@@ -76,7 +121,7 @@ class OpampCollectorOPAMPIntegrationTest(
                 
             """.trimIndent()
 
-        org.testcontainers.Testcontainers.exposeHostPorts(localPort!!)
+        org.testcontainers.Testcontainers.exposeHostPorts(localPort!!);
         val otelCollectorContainer =
             GenericContainer(otelCollectorContainerImage)
                 .withCopyToContainer(
@@ -143,7 +188,7 @@ class OpampCollectorOPAMPIntegrationTest(
                 
             """.trimIndent()
 
-        org.testcontainers.Testcontainers.exposeHostPorts(localPort!!)
+        org.testcontainers.Testcontainers.exposeHostPorts(localPort!!);
         val otelCollectorContainer =
             GenericContainer(otelCollectorContainerImage)
                 .withCopyToContainer(
