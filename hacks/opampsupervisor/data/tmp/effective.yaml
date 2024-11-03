@@ -1,0 +1,37 @@
+exporters:
+    nop: null
+extensions:
+    health_check:
+        endpoint: localhost:44217
+    opamp:
+        instance_uid: 019330c3-11a5-74bb-b18c-a649807daa3e
+        ppid: 1
+        ppid_poll_interval: 5s
+        server:
+            ws:
+                endpoint: ws://127.0.0.1:33817/v1/opamp
+                tls:
+                    insecure: true
+receivers:
+    nop: null
+service:
+    extensions:
+        - health_check
+        - opamp
+    pipelines:
+        traces:
+            exporters:
+                - nop
+            receivers:
+                - nop
+    telemetry:
+        logs:
+            encoding: json
+        resource:
+            host.arch: arm64
+            host.name: f13fba801a1d
+            os.description: ' '
+            os.type: linux
+            service.instance.id: 019330c3-11a5-74bb-b18c-a649807daa3e
+            service.name: otelcol-contrib
+            service.version: 0.112.0

@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  opampsupervisor:
+    container_name: opampsupervisor
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4317:4317
+      - 55678:55678
+    volumes:
+      - ${PWD}/data/config.yaml:/etc/config.yaml
+      - ${PWD}/data/tmp:/tmp
+    command: ["--config", "/etc/config.yaml"]
