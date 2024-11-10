@@ -76,7 +76,7 @@ class OpampCollectorOPAMPIntegrationTest(
                 
             """.trimIndent()
 
-        org.testcontainers.Testcontainers.exposeHostPorts(localPort!!);
+        org.testcontainers.Testcontainers.exposeHostPorts(localPort!!)
         val otelCollectorContainer =
             GenericContainer(otelCollectorContainerImage)
                 .withCopyToContainer(
@@ -143,7 +143,7 @@ class OpampCollectorOPAMPIntegrationTest(
                 
             """.trimIndent()
 
-        org.testcontainers.Testcontainers.exposeHostPorts(localPort!!);
+        org.testcontainers.Testcontainers.exposeHostPorts(localPort!!)
         val otelCollectorContainer =
             GenericContainer(otelCollectorContainerImage)
                 .withCopyToContainer(

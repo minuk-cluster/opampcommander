@@ -99,8 +99,4 @@ data class Agent(
         get() = agentDescription?.service
     val host: Host?
         get() = agentDescription?.host
-
-    fun applyRemoteConfig(newRemoteConfig: AgentRemoteConfig) {
-        TODO("Not yet implemented")
-    }
 }
