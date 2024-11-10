@@ -25,7 +25,14 @@ class AgentService(
     override suspend fun getTotalAgents(): Long = agentOperationsPort.countAgents()
 
     override suspend fun getAgents(request: GetAgentsRequest): Flow<Agent> {
-        // TODO: Implement request by sort.
-        return agentOperationsPort.getAgents()
+        val pivot = request.pivot.ifEmpty { null }
+        val limit = request.limit
+        val sort = request.sort
+
+        return agentOperationsPort.getAgents(
+            pivot = pivot,
+            limit = limit,
+            sort = sort,
+        )
     }
 }

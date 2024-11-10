@@ -3,6 +3,7 @@ package dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent
 import com.github.f4b6a3.ulid.Ulid
 import dev.minuk.opampcommander.TestcontainersConfiguration
 import dev.minuk.opampcommander.adapter.secondary.persistence.mongo.agent.document.AgentDocument
+import dev.minuk.opampcommander.domain.models.Sort
 import dev.minuk.opampcommander.domain.models.agent.Agent
 import dev.minuk.opampcommander.domain.models.agent.AgentCapabilities
 import dev.minuk.opampcommander.domain.models.agent.AgentDescription
@@ -11,7 +12,9 @@ import dev.minuk.opampcommander.domain.models.agent.ComponentHealth
 import dev.minuk.opampcommander.domain.models.agent.CustomCapabilities
 import dev.minuk.opampcommander.domain.models.agent.EffectiveConfig
 import dev.minuk.opampcommander.domain.models.agent.PackageStatuses
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -52,6 +55,81 @@ class AgentMongoAdapterTest(
         val agent = runBlocking { agentMongoAdapter.getAgentByInstanceUid(instanceUid = instanceUid) }
         // then
         assertNotNull(agent)
+    }
+
+    @Test
+    fun `getAgents() should return multiple agents when agents exist`() {
+        // given
+        val instanceUid1 = Ulid.fast()
+        val instanceUid2 = Ulid.fast()
+        reactiveMongoOperations.insert(emptyAgentDocument().copy(instanceUid = instanceUid1.toUuid())).block()
+        reactiveMongoOperations.insert(emptyAgentDocument().copy(instanceUid = instanceUid2.toUuid())).block()
+        // when
+        val agents =
+            runBlocking {
+                agentMongoAdapter
+                    .getAgents(
+                        pivot = null,
+                        limit = 2,
+                        sort = Sort("instanceUid", Sort.Direction.ASC),
+                    ).toList()
+            }
+        // then
+        assertNotNull(agents)
+        assert(agents.size == 2)
+    }
+
+    @Test
+    fun `getAgents() should return limited data when limit`() {
+        // given
+        val instanceUid1 = Ulid.fast() // It's a trick to generate instanceUid1 < instanceUid2
+        val instanceUid2 = Ulid.fast()
+        reactiveMongoOperations.insert(emptyAgentDocument().copy(instanceUid = instanceUid1.toUuid())).block()
+        reactiveMongoOperations.insert(emptyAgentDocument().copy(instanceUid = instanceUid2.toUuid())).block()
+
+        // when
+        val agents =
+            runBlocking {
+                agentMongoAdapter
+                    .getAgents(
+                        pivot = null,
+                        limit = 1,
+                        sort = Sort("instanceUid", Sort.Direction.ASC),
+                    ).toList()
+            }
+        // then
+        assertNotNull(agents)
+        assertEquals(1, agents.size)
+    }
+
+    @Test
+    fun `getAgents() should return next page of agents when id pivot is provided`() {
+        // given
+        val instanceUid1 = Ulid.fast()
+        val instanceUid2 = Ulid.fast()
+        val agent1 = reactiveMongoOperations.insert(emptyAgentDocument().copy(instanceUid = instanceUid1.toUuid())).block()
+        val agent2 = reactiveMongoOperations.insert(emptyAgentDocument().copy(instanceUid = instanceUid2.toUuid())).block()
+
+        val agent1Id = agent1!!.id!!
+        val agent2Id = agent2!!.id!!
+        var pivot = agent1Id
+        if (pivot > agent2Id) {
+            pivot = agent2Id
+        }
+
+        // when
+        val agents =
+            runBlocking {
+                agentMongoAdapter
+                    .getAgents(
+                        pivot = pivot,
+                        limit = 1,
+                        sort = Sort("id", Sort.Direction.ASC),
+                    ).toList()
+            }
+        // then
+        assertNotNull(agents)
+        assert(agents.size == 1)
     }
 
     @Test
