@@ -31,7 +31,7 @@ data class OTELCollectorConfig (
             receivers = receivers.associate { "${it.type}/${it.name}" to it.value },
             processors = processors.associate { "${it.type}/${it.name}" to it.value },
             exporters = exporters.associate { "${it.type}/${it.name}" to it.value },
-            service = mapOf("pipelines" to pipelines.map { it.name }),
+            service = mapOf("pipelines" to pipelines.associate { "${it.type}/${it.name}" to it.value }),
         )
     }
 
