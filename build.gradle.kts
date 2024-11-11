@@ -67,7 +67,7 @@ dependencies {
 
 	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0")
 
-	implementation("com.google.protobuf:protobuf-java:3.18.1")
+	implementation("com.google.protobuf:protobuf-java:4.28.2")
 	implementation("com.google.protobuf:protobuf-java-util:3.18.1")
 
 	implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
