@@ -19,7 +19,7 @@ import java.time.Duration
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class OpampCollectorOPAMPIntegrationTest(
+class OtelCollectorOPAMPIntegrationTest(
     @Autowired
     private val webClient: WebTestClient,
 ) {
